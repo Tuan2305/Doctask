@@ -1,0 +1,65 @@
+<div class="wrapper" [ngClass]="{collapsed: isCollapsed}">
+  <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed" class="sidebar-menu">
+    
+    <!-- Submenu "Không gian" -->
+    <!-- icon thư mục -->
+     <li 
+      nz-submenu
+      [nzOpen]="true"
+      nzTitle="Không gian"
+      nzIcon="folder"  nzTheme ="fill"
+      class="sidebar-menu-item"
+    >
+      <ul>
+        <li nz-menu-item
+            [nzSelected]="selectedMenu === 'assigned-tasks'"
+            routerLink="/assigned-tasks"
+            class="sidebar-menu-item">
+          <span nz-icon nzType="ordered-list" nzTheme="outline" class="menu-icon"></span>
+          <span>Việc được giao</span>
+        </li>
+        <li nz-menu-item
+            [nzSelected]="selectedMenu === 'task-management'"
+            routerLink="/tasks"
+            class="sidebar-menu-item">
+          <span nz-icon nzType="shopping" nzTheme="fill" class="menu-icon"></span>
+          <span>Việc quản lý</span>
+        </li>
+      </ul>
+    </li>
+
+    <!-- Mục "Tài liệu" -->
+    <li nz-menu-item
+        routerLink="/documents"
+        [nzSelected]="selectedMenu === 'documents'"
+        class="sidebar-menu-item">
+      <span nz-icon nzType="file" nzTheme="fill" class="menu-icon"></span>
+      <span>Tài liệu</span>
+    </li>
+
+    <!-- Mục "Automation" -->
+    <li nz-menu-item
+        routerLink="/automation"
+        [nzSelected]="selectedMenu === 'automation'"
+        class="sidebar-menu-item">
+      <span nz-icon nzType="rocket" nzTheme="fill" class="menu-icon"></span>
+      <span>Automation</span>
+    </li>
+
+    <!-- Mục "AI Agent" -->
+    <li nz-menu-item
+        routerLink="/ai-agent"
+        [nzSelected]="selectedMenu === 'ai-agent'"
+        class="sidebar-menu-item">
+      <span nz-icon nzType="robot" nzTheme="fill" class="menu-icon"></span>
+      <span>AI Agent</span>
+    </li>
+  </ul>
+
+  <!-- Nút toggle thu gọn menu -->
+  <div class="custom-trigger">
+    <button class="toggle-button" (click)="toggleCollapsed()">
+      <span nz-icon [nzType]="isCollapsed ? 'right' : 'left'" nzTheme="outline"></span>
+    </button>
+  </div>
+</div>

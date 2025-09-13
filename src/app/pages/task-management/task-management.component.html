@@ -1,0 +1,100 @@
+<!-- src/app/pages/task-management/task-management.component.html -->
+<div class="task-management-page">
+  <!-- Header với dropdown và search -->
+  <div class="task-page-header">
+    <div class="header-left">
+      <div class="page-title">
+        <span nz-icon nzType="unordered-list" nzTheme="outline" class="title-icon"></span>
+        <h3>Các công việc quản lý</h3>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="search-input-container">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input type="text" nz-input placeholder="Tìm kiếm công việc" [(ngModel)]="searchText" (keyup.enter)="onSearch()" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <span nz-icon nzType="search" (click)="onSearch()"></span>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wrapper để đẩy pagination xuống cuối -->
+  <div class="content-wrapper">
+    <!-- Loading state -->
+    <div *ngIf="loading" class="loading-container">
+      <nz-spin nzTip="Đang tải..."></nz-spin>
+    </div>
+
+    <!-- Task list container -->
+    <div class="task-list-container" *ngIf="!loading">
+      <ng-container *ngIf="displayTasks && displayTasks.length > 0; else noTasks">
+        <div class="task-card" *ngFor="let task of displayTasks">
+          <!-- Task content -->
+          <div class="task-content">
+            <div class="task-icon">
+              <span nz-icon nzType="file-text" nzTheme="outline"></span>
+            </div>
+            <div class="task-info">
+              <div class="task-title">{{ task.title }}</div>
+              <div class="task-meta">
+                <span class="task-date">
+                  <span nz-icon nzType="calendar" nzTheme="outline"></span>
+                  {{ task.startDate | date:'HH:mm dd/MM/yyyy' }} - {{ task.dueDate | date:'HH:mm dd/MM/yyyy' }}
+                </span>
+                <span class="task-assignee">
+                  <span nz-icon nzType="user" nzTheme="outline"></span>
+                  Nội dung
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress section -->
+          <div class="task-progress-section">
+            <div class="progress-bar-container">
+              <nz-progress 
+                [nzPercent]="task.progressPercentage || task.percentageComplete || 0" 
+                nzSize="small"
+                [nzStrokeColor]="getProgressColor(task.progressPercentage || task.percentageComplete || 0)">
+              </nz-progress>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="task-actions">
+            <button nz-button class="add-subtask-btn" nzType="primary" nzSize="small" >
+              Thêm việc con
+            </button>
+            <button nz-button class="progress-btn" nzType="primary" nzSize="small">
+               <!-- (click)="openProgressModal(task) -->
+              Tiến độ
+            </button>
+            <button nz-button class="edit-btn" nzType="primary" nzSize="small" >
+              <!-- (click)="openTaskFormModal(task)" -->
+              Sửa
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      
+      <ng-template #noTasks>
+        <div class="no-tasks">
+          <nz-empty nzText="Danh sách trống !"></nz-empty>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Pagination - sẽ được đẩy xuống cuối -->
+    <div class="pagination-container" *ngIf="displayTasks && displayTasks.length > 0">
+      <nz-pagination
+        [nzPageIndex]="pageIndex"
+        [nzPageSize]="pageSize"
+        [nzTotal]="total"
+        (nzPageIndexChange)="onPageIndexChange($event)"
+        nzSimple="true">
+      </nz-pagination>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,93 @@
+<!-- src/app/pages/task-assignment/task-assignment.component.html -->
+<div class="task-assignment-page">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <div class="page-title">
+        <span nz-icon nzType="plus-circle" nzTheme="outline" class="title-icon"></span>
+        <h3>Giao việc</h3>
+      </div>
+    </div>
+    <div class="header-right">
+      <button 
+        nz-button 
+        nzType="primary" 
+        nzSize="default"
+        (click)="openCreateParentTaskModal()"
+        class="create-task-btn">
+        <span nz-icon nzType="plus"></span>
+        Tạo việc gốc
+      </button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="page-content">
+    <!-- Loading state -->
+    <div *ngIf="loading" class="loading-container">
+      <nz-spin nzTip="Đang tải..."></nz-spin>
+    </div>
+
+    <!-- Task list -->
+    <div *ngIf="!loading" class="task-list-container">
+      <ng-container *ngIf="parentTasks && parentTasks.length > 0; else noTasks">
+        <div class="task-list">
+          <nz-card 
+            *ngFor="let task of parentTasks" 
+            class="task-card"
+            [nzTitle]="task.title"
+            [nzExtra]="taskActionTemplate"
+            nzSize="small">
+            
+            <div class="task-info">
+              <p class="task-description" *ngIf="task.description">
+                {{ task.description }}
+              </p>
+              <div class="task-meta">
+                <span class="task-date">
+                  <span nz-icon nzType="calendar" nzTheme="outline"></span>
+                  {{ formatDate(task.startDate) }} - {{ formatDate(task.dueDate) }}
+                </span>
+                <span class="task-priority" [ngClass]="'priority-' + task.priority">
+                  <span nz-icon nzType="flag" nzTheme="fill"></span>
+                  {{ getPriorityText(task.priority || '') }}
+                </span>
+              </div>
+            </div>
+
+            <ng-template #taskActionTemplate>
+              <button 
+                nz-button 
+                nzType="link" 
+                nzSize="small">
+
+                <!-- (click)="viewTaskDetails(task.id)"> -->
+                
+                <span nz-icon nzType="eye"></span>
+                Xem chi tiết
+              </button>
+            </ng-template>
+          </nz-card>
+        </div>
+      </ng-container>
+
+      <ng-template #noTasks>
+        <div class="empty-state">
+          <nz-empty 
+            nzText="Chưa có việc gốc nào được tạo"
+            [nzNotFoundImage]="'simple'">
+            <div nz-empty-footer>
+              <button 
+                nz-button 
+                nzType="primary" 
+                (click)="openCreateParentTaskModal()">
+                <span nz-icon nzType="plus"></span>
+                Tạo việc gốc đầu tiên
+              </button>
+            </div>
+          </nz-empty>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

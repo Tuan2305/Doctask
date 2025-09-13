@@ -1,0 +1,147 @@
+<div class="task-assignment-modal">
+  <div class="modal-header">
+    <h3>{{ nzData?.isChildTask ? 'Thêm việc con' : (nzData?.parentTask ? 'Cập nhật nhiệm vụ' : 'Tạo nhiệm vụ mới') }}</h3>
+  </div>
+<form nz-form [formGroup]="taskForm" (ngSubmit)="submitForm()">
+  <!-- Tiêu đề nhiệm vụ -->
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="title">Tiêu đề</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24" nzErrorTip="Vui lòng nhập tiêu đề!">
+      <input nz-input formControlName="title" id="title" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Mô tả -->
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Mô tả</nz-form-label>
+    <nz-form-control [nzSm]="16" [nzXs]="24">
+      <textarea nz-input formControlName="description" id="description" nzAutosize></textarea>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Các trường khác cho nhiệm vụ cha -->
+  <ng-container *ngIf="!nzData?.isChildTask">
+    <!-- Độ ưu tiên -->
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="priority">Độ ưu tiên</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24" nzErrorTip="Vui lòng chọn độ ưu tiên!">
+        <nz-select formControlName="priority" id="priority" nzPlaceHolder="Chọn độ ưu tiên">
+          <nz-option nzLabel="Thấp" nzValue="low"></nz-option>
+          <nz-option nzLabel="Trung bình" nzValue="medium"></nz-option>
+          <nz-option nzLabel="Cao" nzValue="high"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Thời gian bắt đầu và kết thúc -->
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="dateRange">Thời gian</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24" nzErrorTip="Vui lòng chọn ngày!">
+        <div class="date-picker-group">
+          <div class="date-picker-item">
+            <label>Bắt đầu</label>
+            <nz-date-picker formControlName="startDate" nzFormat="dd/MM/yyyy" nzPlaceHolder="Ngày bắt đầu"></nz-date-picker>
+          </div>
+          <div class="date-picker-item">
+            <label>Kết thúc</label>
+            <nz-date-picker formControlName="dueDate" nzFormat="dd/MM/yyyy" nzPlaceHolder="Ngày kết thúc"></nz-date-picker>
+          </div>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+  </ng-container>
+
+  <!-- Các trường cho nhiệm vụ con -->
+  <ng-container *ngIf="nzData?.isChildTask">
+    <!-- Người được phân công -->
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="assigneeIds">Người thực hiện</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24" nzErrorTip="Vui lòng chọn người thực hiện!">
+        <nz-select formControlName="assigneeIds" id="assigneeIds" nzMode="multiple" nzPlaceHolder="Chọn người thực hiện">
+          <nz-option *ngFor="let user of subordinateUsers" [nzLabel]="user.fullName" [nzValue]="user.userId"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Đơn vị được phân công -->
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="unitIds">Đơn vị thực hiện</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-select formControlName="unitIds" id="unitIds" nzMode="multiple" nzPlaceHolder="Chọn đơn vị thực hiện">
+          <nz-option *ngFor="let unit of subordinateUnits" [nzLabel]="unit.unitName" [nzValue]="unit.unitId"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Thời gian bắt đầu và kết thúc -->
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="dateRange">Thời gian</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24" nzErrorTip="Vui lòng chọn ngày!">
+        <div class="date-picker-group">
+          <div class="date-picker-item">
+            <label>Bắt đầu</label>
+            <nz-date-picker formControlName="startDate" nzFormat="dd/MM/yyyy" nzPlaceHolder="Ngày bắt đầu"></nz-date-picker>
+          </div>
+          <div class="date-picker-item">
+            <label>Kết thúc</label>
+            <nz-date-picker formControlName="endDate" nzFormat="dd/MM/yyyy" nzPlaceHolder="Ngày kết thúc"></nz-date-picker>
+          </div>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Loại tần suất -->
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="frequencyType">Tần suất</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24" nzErrorTip="Vui lòng chọn tần suất!">
+        <nz-select formControlName="frequencyType" id="frequencyType" nzPlaceHolder="Chọn tần suất">
+          <nz-option *ngFor="let type of frequencyTypes" [nzLabel]="type.label" [nzValue]="type.value"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Giá trị khoảng thời gian -->
+    <nz-form-item *ngIf="taskForm.value.frequencyType !== 'once'">
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="intervalValue">Khoảng thời gian</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24" nzErrorTip="Vui lòng nhập khoảng thời gian!">
+        <nz-input-number formControlName="intervalValue" id="intervalValue" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        <span class="interval-label">
+          <ng-container [ngSwitch]="taskForm.value.frequencyType">
+            <ng-container *ngSwitchCase="'daily'">ngày</ng-container>
+            <ng-container *ngSwitchCase="'weekly'">tuần</ng-container>
+            <ng-container *ngSwitchCase="'monthly'">tháng</ng-container>
+          </ng-container>
+        </span>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Ngày trong tuần (nếu là tần suất hàng tuần) -->
+    <nz-form-item *ngIf="taskForm.value.frequencyType === 'weekly'">
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="daysOfWeek">Các ngày trong tuần</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24" nzErrorTip="Vui lòng chọn ít nhất một ngày!">
+        <nz-select formControlName="daysOfWeek" id="daysOfWeek" nzMode="multiple" nzPlaceHolder="Chọn ngày trong tuần">
+          <nz-option *ngFor="let day of daysOfWeek" [nzLabel]="day.label" [nzValue]="day.value"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Ngày trong tháng (nếu là tần suất hàng tháng) -->
+    <nz-form-item *ngIf="taskForm.value.frequencyType === 'monthly'">
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="daysOfMonth">Các ngày trong tháng</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24" nzErrorTip="Vui lòng chọn ít nhất một ngày!">
+        <nz-select formControlName="daysOfMonth" id="daysOfMonth" nzMode="multiple" nzPlaceHolder="Chọn ngày trong tháng">
+          <nz-option *ngFor="let day of getDaysOfMonth()" [nzLabel]="day.label" [nzValue]="day.value"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </ng-container>
+
+  <!-- Nút hành động -->
+  <div nz-row nzJustify="end" class="modal-footer">
+    <button nz-button nzType="default" (click)="closeModal()" [disabled]="isLoading">Hủy</button>
+    <button nz-button nzType="primary" type="submit" [nzLoading]="isLoading" [disabled]="!taskForm.valid" class="ml-8">
+      {{ nzData?.parentTask ? 'Cập nhật' : 'Tạo mới' }}
+    </button>
+  </div>
+</form>
+</div>

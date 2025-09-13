@@ -1,0 +1,86 @@
+// src/app/components/create-parent-task-modal/create-parent-task-modal.component.scss
+.create-parent-task-modal {
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid #f0f0f0;
+    margin: -16px -24px 24px -24px;
+
+    h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #262626;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      span[nz-icon] {
+        color: #1890ff;
+        font-size: 20px;
+      }
+    }
+
+    .close-btn {
+      border: none;
+      box-shadow: none;
+
+      &:hover {
+        color: #ff4d4f;
+      }
+    }
+  }
+
+  .parent-task-form {
+    .full-width {
+      width: 100%;
+    }
+
+    nz-form-item {
+      margin-bottom: 24px;
+    }
+
+    nz-form-label {
+      font-weight: 500;
+      color: #262626;
+    }
+
+    input, textarea, nz-select, nz-range-picker {
+      border-radius: 6px;
+
+      &:focus {
+        border-color: #1890ff;
+        box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid #f0f0f0;
+
+      .submit-btn {
+        background: #1890ff;
+        border-color: #1890ff;
+
+        &:hover:not(:disabled) {
+          background: #40a9ff;
+          border-color: #40a9ff;
+        }
+
+        &:disabled {
+          opacity: 0.6;
+        }
+      }
+    }
+  }
+}

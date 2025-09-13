@@ -1,0 +1,38 @@
+<div class="login-container">
+  <div class="login-box">
+    <div class="login-header">
+      <!-- <img src="assets/logo.png" alt="DocTask Logo" class="logo" /> -->
+      <h2>Đăng nhập hệ thống DocTask</h2>
+    </div>
+    <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Vui lòng nhập tên đăng nhập!">
+          <nz-input-group nzPrefixIcon="user">
+            <input type="text" nz-input formControlName="username" placeholder="Tên đăng nhập" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Vui lòng nhập mật khẩu!">
+          <nz-input-group nzPrefixIcon="lock">
+            <input type="password" nz-input formControlName="password" placeholder="Mật khẩu" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row class="login-form-options">
+        <div nz-col [nzSpan]="12">
+          <label nz-checkbox formControlName="remember">
+            <span>Ghi nhớ</span>
+          </label>
+        </div>
+        <div nz-col [nzSpan]="12" class="forgot-password">
+          <a class="login-form-forgot">Quên mật khẩu</a>
+        </div>
+      </div>
+      <button nz-button class="login-form-button" [nzType]="'primary'" [nzLoading]="isLoading">Đăng nhập</button>
+      <div class="register-link">
+        <button nz-button nzType="link" (click)="goToRegister()">Chưa có tài khoản? Đăng ký ngay</button>
+      </div>
+    </form>
+  </div>
+</div>

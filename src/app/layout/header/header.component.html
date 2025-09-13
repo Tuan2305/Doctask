@@ -1,0 +1,61 @@
+<div class="header-container">
+  <div class="header-left">
+<span nz-icon nzType="menu" nzTheme="outline" class="menu-toggle-button" (click)="toggleSidebar()"></span>
+
+    <span class="header-title">DOC TASK</span>
+    
+  </div>
+
+  <div class="header-right">
+    <!-- Các nút chức năng -->
+    <button nz-button class="header-button" 
+        (click)="navigateToTaskAssignment()" 
+        [class.active]="isActive('/task-assignment')">
+  Giao việc
+</button>
+    
+    <button nz-button class="header-button summary-button"
+            (click)="navigateTo('/assigned-tasks')" 
+            [class.active]="isActive('/assigned-tasks')">
+      Tổng hợp
+    </button>
+
+    <button nz-button class="header-button notification-button">
+  <span nz-icon nzType="bell" nzTheme="outline"></span>
+</button>
+    <div class="user-avatar-container">
+      <nz-avatar 
+        nzIcon="user" 
+        class="header-avatar"
+  
+        (click)="toggleUserPopover()">
+      </nz-avatar>
+      
+      <div class="user-menu-dropdown" *ngIf="isUserPopoverVisible">
+        <div class="user-info-section">
+          <nz-avatar 
+            nzIcon="user" 
+      
+            class="dropdown-avatar">
+          </nz-avatar>
+          <div class="user-details">
+            <div class="user-name">{{ currentUser?.fullName || 'admin' }}</div>
+            <div class="user-email">{{ currentUser?.email || 'tri.trinh@techgenz.vn' }}</div>
+          </div>
+        </div>
+        
+        <div class="menu-options">
+          <div class="menu-item" (click)="changePassword()">
+            <span nz-icon nzType="lock" nzTheme="outline"></span>
+            <span>Đổi mật khẩu</span>
+          </div>
+          
+          <div class="menu-item" (click)="logout()">
+            <span nz-icon nzType="logout" nzTheme="outline"></span>
+            <span>Đăng xuất</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,303 @@
+// .wrapper {
+//   margin-top: 20px;
+//         width: 100%;
+//       }
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0px 5px;
+  height: 100%;
+  // background-color: #fafafa;
+  width: 220px; /* width khi mở */
+  transition: width 0.35s ease; /* thêm transition */
+  overflow: hidden; /* tránh tràn */
+}
+
+.wrapper.collapsed {
+  width: 88px;
+
+}
+::ng-deep .ant-menu-inline .ant-menu-item::after {
+border-right: 3px solid #fc3159;
+}
+::ng-deep .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: #ff8b8b !important;
+  border-radius: 5px
+}
+::ng-deep .ant-menu-item-selected {
+  color: #fff !important;
+}
+::ng-deep .ant-menu-light .ant-menu-submenu-title:hover {
+color: #fc3159 !important;
+}::ng-deep .ant-menu-light .ant-menu-submenu-title {
+color: #fc3159 !important;
+}
+// ::ng-deep .ant-menu-submenu-title {
+// padding-left: 10px;
+// }
+::ng-deep .ant-menu-submenu:hover > .ant-menu-submenu-title > .ant-menu-submenu-arrow {
+  color: #fc3159 !important;
+  
+}
+::ng-deep .ant-menu-light .ant-menu-item:hover {
+    color: white !important;
+    background-color: #ff8b8b !important;
+    // padding-left: 10px;
+    // padding-right: 10px;
+    border-radius: 5px;
+ }
+ ::ng-deep .ant-menu-light .ant-menu-submenu-active {
+   color: rgba(0, 0, 0, .85) !important;
+    // background-color: #ff8b8b !important;
+   
+ }
+::ng-deep .ant-menu- {
+  padding: 5px !important;
+  background-color: #fff !important;
+ }
+ ::ng-deep .ant-menu-sub.ant-menu-inline {
+  background-color: #fff !important;
+
+}
+ ::ng-deep .ant-btn:hover{
+  border-color: #ff8b8b !important;
+  color: #fc3159;
+
+}
+ ::ng-deep .ant-btn:focus{
+  border-color: #ff8b8b !important;
+  color: #fc3159;
+
+}
+::ng-deep .space-header .ant-menu-submenu-title {
+  color: rgba(0, 0, 0, 0.85) !important;
+} 
+
+
+.menu-icon {
+  font-size: 16px;
+  margin-right: 10px;
+  color: #fc3159;
+}
+
+
+.custom-trigger {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0;
+  background-color: #ffffff;
+}
+
+.toggle-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #b7181b;
+  border: none;
+  cursor: pointer;
+  
+  span {
+    color: white;
+    font-size: 12px;
+  }
+  
+  &:hover {
+    background-color: #d32f2f;
+  }
+}
+
+.sidebar-section {
+  padding: 8px 0;
+}
+
+.sidebar-section + .sidebar-section {
+  margin-top: 8px;
+  border-top: 1px solid #e8e8e8;
+}
+
+
+// Overwrite menu borders
+::ng-deep .ant-menu-inline .ant-menu-item::after {
+  border-right: 3px solid #ff7b7b;
+}
+
+::ng-deep .ant-menu-vertical .ant-menu-item::after,
+::ng-deep .ant-menu-vertical-left .ant-menu-item::after,
+::ng-deep .ant-menu-vertical-right .ant-menu-item::after,
+::ng-deep .ant-menu-inline .ant-menu-item::after {
+  border-right: 3px solid #ff7b7b;
+}
+
+// .sidebar-container {
+//   height: 100%;
+//   // width: 200px;
+//   display: flex;
+//   flex-direction: column;
+//   background-color: #ffffff;
+//   border-right: 20px solid #f0f0f0;
+
+//   // width: calc(100% - 20px);
+// }
+
+// .sidebar-menu {
+//   flex: 1;
+//   font-family: 'Poppins', sans-serif;
+//   font-size: 15px;
+//   background-color: #ffffff;
+// }
+
+// :host ::ng-deep {
+//   .ant-menu-submenu-arrow {
+//     color: rgb(0, 0, 0) !important; // Đổi màu mũi tên thành trắng
+//   }
+  
+//   // Đảm bảo mũi tên vẫn có màu trắng khi hover
+//   .ant-menu-submenu-title:hover .ant-menu-submenu-arrow {
+//     color: white !important;
+//   }
+//   .sidebar-menu-item {
+//     font-weight: 500;
+//     .anticon {
+//       color: #b7181b;
+//       font-size: 20px !important;
+//       // font-size: 14px;
+//       // font-weight: bold;
+//     }
+//     // span {
+//     //   font-weight: 500;
+//     //   font-size: 14px;
+//     //   vertical-align: middle;
+//     //   white-space: nowrap;
+//     // }
+//   }
+
+//   .ant-menu-item,
+//   .ant-menu-submenu-title {
+//     height: 40px;
+//     line-height: 48px;
+//     margin: 10px 0 10px 8px;
+//     width: calc(100% - 24px);
+//     // padding-left: 8px;
+//     border-radius: 8px;
+//     transition: font-weight 0.2s;
+//     font-weight: 500;
+//     font-size: 15px;
+//     // padding-right: 12px;
+//     // white-space: nowrap;
+//   }
+
+//   .ant-menu-title-content{
+//     margin-left: 2px;
+    
+//   }
+//   .menu-icon {
+//    color: #cd1114;
+//   }
+
+//   // Style cho item hover (không phải submenu)
+//   .ant-menu-item:hover,.ant-menu-submenu-title:hover {
+//     background-color: #ff5858 !important;
+//     // font-weight: bold;
+//     color: #f9f9f9 !important;
+    
+//   }
+
+
+//   // Style cho item được chọn (không phải submenu)
+//   .ant-menu-item-selected {
+//     background-color: #ff5858 !important;
+//     font-weight: bold;
+//     color: #ffffff !important;
+//     &::after {
+//       border-right: none !important;
+//     }
+//   }
+
+//   // Style riêng cho submenu được chọn
+//   .ant-menu-submenu-selected {
+//     background-color: transparent !important; // Không có màu nền
+//     font-weight: bold;
+//     color: #060606 !important;
+//     ;
+//     &::after {
+//       border-right: none !important;
+//     }
+    
+//   }
+  
+//   .ant-menu-inline {
+//   background-color: #ffffff !important;
+//   }
+//   .ant-menu {
+//   background-color: #ffffff !important;
+//   }
+// }
+
+// :host ::ng-deep .ant-menu-inline-collapsed {
+//   // Ẩn các dấu ... nếu được thêm qua pseudo-element
+//   .ant-menu-item::after,
+//   .ant-menu-submenu-title::after {
+//     content: none !important;
+//     //  padding: 0 !important;
+//     // text-align: center;
+//   }
+  
+//   // Ẩn mũi tên submenu khi thu gọn
+//   .ant-menu-submenu-arrow {
+//     display: none !important;
+//   }
+  
+//   // Căn giữa icon khi thu gọn
+//   .ant-menu-item .anticon,
+//   .ant-menu-submenu-title .anticon {
+//     margin: 0 auto;
+//     padding-right: 0;
+    
+//     font-size: 20px !important;
+//   }
+  
+   
+
+// }
+
+
+// .custom-trigger {
+//   display: flex;
+//   justify-content: center;
+//   padding: 16px 0;
+//   background-color: #ffffff;
+// }
+
+// .toggle-button {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   width: 32px;
+//   height: 32px;
+//   border-radius: 50%;
+//   background-color: #b7181b;
+//   border: none;
+//   cursor: pointer;
+  
+//   span {
+//     color: white;
+//     font-size: 12px;
+//   }
+  
+//   &:hover {
+//     background-color: #d32f2f;
+//   }
+// }
+
+// .sidebar-section {
+//   padding: 8px 0;
+// }
+
+// .sidebar-section + .sidebar-section {
+//   margin-top: 8px;
+//   border-top: 1px solid #e8e8e8;
+// }

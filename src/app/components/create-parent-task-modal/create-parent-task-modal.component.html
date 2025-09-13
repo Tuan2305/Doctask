@@ -1,0 +1,84 @@
+<!-- src/app/components/create-parent-task-modal/create-parent-task-modal.component.html -->
+<div class="create-parent-task-modal">
+  <div class="modal-header">
+    <h3>
+      <span nz-icon nzType="plus-circle" nzTheme="outline"></span>
+      Tạo việc gốc
+    </h3>
+    <button nz-button nzType="text" class="close-btn" (click)="closeModal()">
+      <span nz-icon nzType="close"></span>
+    </button>
+  </div>
+
+  <form nz-form [formGroup]="parentTaskForm" (ngSubmit)="submitForm()" class="parent-task-form">
+    <!-- Tên công việc -->
+    <nz-form-item>
+      <nz-form-label nzRequired>Tên công việc</nz-form-label>
+      <nz-form-control nzErrorTip="Vui lòng nhập tên công việc (tối đa 200 ký tự)!">
+        <input 
+          nz-input 
+          formControlName="title" 
+          placeholder="Nhập tên công việc gốc..."
+          maxlength="200" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Mô tả -->
+    <nz-form-item>
+      <nz-form-label>Mô tả công việc</nz-form-label>
+      <nz-form-control nzErrorTip="Mô tả không được vượt quá 1000 ký tự!">
+        <textarea 
+          nz-input 
+          formControlName="description" 
+          [nzAutosize]="{ minRows: 3, maxRows: 6 }"
+          placeholder="Mô tả chi tiết về công việc gốc..."
+          maxlength="1000">
+        </textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Độ ưu tiên -->
+    <nz-form-item>
+      <nz-form-label nzRequired>Độ ưu tiên</nz-form-label>
+      <nz-form-control nzErrorTip="Vui lòng chọn độ ưu tiên!">
+        <nz-select formControlName="priority" nzPlaceHolder="Chọn độ ưu tiên">
+          <nz-option 
+            *ngFor="let option of priorityOptions" 
+            [nzLabel]="option.label" 
+            [nzValue]="option.value">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Thời gian thực hiện -->
+    <nz-form-item>
+      <nz-form-label nzRequired>Thời gian thực hiện</nz-form-label>
+      <nz-form-control nzErrorTip="Vui lòng chọn thời gian bắt đầu và kết thúc!">
+        <nz-range-picker 
+          formControlName="dateRange" 
+          nzFormat="dd/MM/yyyy"
+          [nzPlaceHolder]="['Ngày bắt đầu', 'Ngày kết thúc']"
+          class="full-width">
+        </nz-range-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Buttons -->
+    <div class="modal-footer">
+      <button nz-button nzType="default" (click)="closeModal()" [disabled]="isLoading">
+        Hủy bỏ
+      </button>
+      <button 
+        nz-button 
+        nzType="primary" 
+        type="button"
+        (click)="submitForm()" 
+        [nzLoading]="isLoading" 
+        class="submit-btn">
+        <span nz-icon nzType="plus"></span>
+        Tạo việc gốc
+      </button>
+    </div>
+  </form>
+</div>

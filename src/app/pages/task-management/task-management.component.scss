@@ -1,0 +1,377 @@
+// src/app/pages/task-management/task-management.component.scss
+$primary-color: #1890ff;
+$warning-color: #faad14;
+$success-color: #52c41a;
+$error-color: #ff4d4f;
+$border-color: #d9d9d9;
+$text-primary: #262626;
+$text-secondary: #8c8c8c;
+$bg-white: #ffffff;
+$bg-light: #ffffff;
+
+.task-management-page {
+  padding: 0;
+  background-color: $bg-light; // Đổi thành màu xám nhạt để thấy rõ shadow
+  min-height: 100vh;
+  overflow: hidden;
+
+  .task-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: #ffffff;
+    border-bottom: 1px solid #ffffff;
+    margin-bottom: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); // Thêm shadow cho header
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      // gap: 8px;
+
+      .page-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .title-icon {
+          font-size:18px;
+          color: black;
+        }
+
+        h3 {
+          margin: 0;
+          font-size: 16px;
+          font-weight: 500;
+          color: $text-primary;
+        }
+      }
+    }
+
+    .header-right {
+      .search-input-container {
+        width: 280px;
+
+        input {
+          border-radius: 6px;
+        }
+
+        .ant-input-group-addon {
+          background: transparent;
+          border: none;
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px;
+
+      .header-right {
+        width: 100%;
+
+        .search-input-container {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    background: $bg-light;
+  }
+
+  .task-list-container {
+    background: $bg-light;
+    padding: 20px; // Thêm padding để tạo khoảng cách
+    min-height: calc(100vh - 200px); // Đảm bảo chiều cao tối thiểu
+
+    .task-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      margin-bottom: 16px; // Thêm margin bottom để tạo khoảng cách giữa các ô
+      background: $bg-white;
+      border-radius: 8px; // Thêm border radius
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); // Thêm hiệu ứng shadow nổi
+      border: 1px solid #f0f0f0;
+      transition: all 0.3s ease;
+
+      &:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); // Shadow mạnh hơn khi hover
+        transform: translateY(-2px); // Hiệu ứng nổi lên khi hover
+        border-color: #d9d9d9;
+      }
+
+      &:last-child {
+        margin-bottom: 0; // Loại bỏ margin của item cuối
+      }
+
+      .task-content {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        gap: 16px;
+
+        .task-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          background: #f6f6f6;
+          border-radius: 8px;
+
+          span {
+            font-size: 18px;
+            color: $text-secondary;
+          }
+        }
+
+        .task-info {
+          flex: 1;
+
+          .task-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: $text-primary;
+            margin-bottom: 8px;
+            line-height: 1.4;
+          }
+
+          .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            font-size: 14px;
+            color: $text-secondary;
+
+            .task-date, .task-assignee {
+              display: flex;
+              align-items: center;
+              gap: 6px;
+
+              span[nz-icon] {
+                font-size: 14px;
+              }
+            }
+
+            @media (max-width: 768px) {
+              flex-direction: column;
+              align-items: flex-start;
+              gap: 8px;
+            }
+          }
+        }
+      }
+
+      .task-progress-section {
+        display: flex;
+        align-items: center;
+        margin-right: 24px;
+        min-width: 120px;
+
+        .progress-bar-container {
+          width: 100%;
+
+          ::ng-deep .ant-progress {
+            .ant-progress-outer {
+              .ant-progress-inner {
+                .ant-progress-bg {
+                  height: 6px;
+                  border-radius: 3px;
+                }
+              }
+            }
+
+            .ant-progress-text {
+              font-size: 14px;
+              font-weight: 500;
+            }
+          }
+        }
+
+        @media (max-width: 768px) {
+          margin-right: 12px;
+          min-width: 80px;
+        }
+      }
+
+      .task-actions {
+        display: flex;
+        gap: 8px;
+
+        .add-subtask-btn, .progress-btn, .edit-btn {
+          height: 32px;
+          padding: 0 12px;
+          font-size: 14px;
+          border-radius: 6px;
+          font-weight: 500;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); // Thêm shadow cho buttons
+          transition: all 0.2s ease;
+
+          &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+          }
+
+          @media (max-width: 768px) {
+            padding: 0 8px;
+            font-size: 12px;
+          }
+        }
+
+        .add-subtask-btn {
+          background: #17a2b8;
+          border-color: #17a2b8;
+          color: white;
+
+          &:hover {
+            background: #138496;
+            border-color: #138496;
+          }
+        }
+
+        .progress-btn {
+          background: $primary-color;
+          border-color: $primary-color;
+
+          &:hover {
+            background: #40a9ff;
+            border-color: #40a9ff;
+          }
+        }
+
+        .edit-btn {
+          background: $warning-color;
+          border-color: $warning-color;
+          color: white;
+
+          &:hover {
+            background: #ffc53d;
+            border-color: #ffc53d;
+          }
+        }
+
+        @media (max-width: 768px) {
+          flex-direction: column;
+          gap: 4px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px;
+        margin-bottom: 12px;
+
+        .task-progress-section {
+          width: 100%;
+          margin-right: 0;
+        }
+
+        .task-actions {
+          width: 100%;
+          justify-content: flex-end;
+        }
+      }
+    }
+
+    .no-tasks {
+      background: $bg-white;
+      padding: 48px 24px;
+      text-align: center;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      margin: 20px;
+    }
+  }
+
+  // Container chính để đẩy pagination xuống cuối
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 140px); // Trừ đi chiều cao header
+  }
+
+  .pagination-container {
+    margin-top: auto; // Đẩy pagination xuống cuối
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+    background: $bg-white;
+    border-top: 1px solid #f0f0f0;
+    box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1); // Shadow phía trên
+
+    // Custom pagination styles
+    ::ng-deep .ant-pagination {
+      .ant-pagination-item {
+        border-radius: 6px;
+        border: 1px solid #d9d9d9;
+        
+        &:hover {
+          border-color: $primary-color;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        &.ant-pagination-item-active {
+          border-color: $primary-color;
+          box-shadow: 0 2px 4px rgba(24, 144, 255, 0.2);
+        }
+      }
+      
+      .ant-pagination-prev, .ant-pagination-next {
+        border-radius: 6px;
+        
+        &:hover {
+          border-color: $primary-color;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      padding: 16px;
+    }
+  }
+}
+
+// Custom progress colors
+::ng-deep .ant-progress-bg {
+  transition: all 0.3s ease;
+}
+
+// Enhanced input styles
+::ng-deep .ant-input {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  
+  &:focus, &:hover {
+    box-shadow: 0 2px 6px rgba(24, 144, 255, 0.2);
+    border-color: $primary-color;
+  }
+}
+
+// Enhanced button styles
+::ng-deep .ant-btn {
+  border-radius: 6px;
+  
+  &:not(.add-subtask-btn):not(.progress-btn):not(.edit-btn) {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    
+    &:focus, &:hover {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      transform: translateY(-1px);
+    }
+  }
+}

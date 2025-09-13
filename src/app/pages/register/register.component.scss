@@ -1,0 +1,129 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url('/assets/login-bg.png');
+  background-size: cover;
+  background-position: center;
+  padding: 16px; // Thêm padding để không bị dính sát cạnh trên mobile
+}
+
+.register-box {
+  width: 500px;
+  max-width: 100%; // Đảm bảo không bị tràn container trên mobile
+  padding: 40px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  
+  @media (max-width: 576px) {
+    width: 100%; // Chiếm toàn bộ chiều rộng trên mobile
+    padding: 25px 20px; // Giảm padding trên mobile
+  }
+}
+
+.register-header {
+  margin-bottom: 24px;
+  text-align: center;
+  
+  h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+    
+    @media (max-width: 576px) {
+      font-size: 20px; // Giảm font size trên mobile
+    }
+  }
+}
+
+.register-form {
+  nz-form-item {
+    margin-bottom: 16px;
+    
+    @media (max-width: 576px) {
+      margin-bottom: 12px;
+    }
+  }
+  
+  nz-form-label {
+    font-weight: 500;
+    
+    @media (max-width: 576px) {
+      margin-bottom: 4px;
+      // Căn chỉnh nhãn trên mobile
+      padding-bottom: 0;
+      line-height: 1.2;
+    }
+  }
+  
+  input {
+    height: 40px;
+    
+    @media (max-width: 576px) {
+      font-size: 16px; // Đảm bảo không bị zoom trên iOS khi focus
+    }
+  }
+}
+
+.register-form-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+  
+  @media (max-width: 576px) {
+    margin-top: 16px;
+    gap: 10px;
+  }
+}
+
+.register-form-button {
+  height: 40px;
+  font-size: 16px;
+  width: 100%;
+  
+  @media (max-width: 576px) {
+    font-size: 15px;
+  }
+}
+
+.login-link-button {
+  background: none;
+  border: none;
+  color: #1890ff;
+  
+  @media (max-width: 576px) {
+    font-size: 14px;
+  }
+  
+  &:hover {
+    color: #40a9ff;
+    background: none;
+    text-decoration: underline;
+  }
+}
+
+// Thêm responsive cho ant-form layout
+::ng-deep .ant-form-item-label {
+  @media (max-width: 576px) {
+    padding: 0;
+    line-height: 1.5;
+    white-space: normal;
+    display: block;
+    text-align: left;
+  }
+}
+
+::ng-deep .ant-form-item-control {
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+}
+
+// Thêm animation khi focus vào input
+input:focus {
+  box-shadow: 0 0 5px rgba(168, 28, 28, 0.5);
+  border-color: #a81c1c;
+}

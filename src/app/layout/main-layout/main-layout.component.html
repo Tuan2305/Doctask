@@ -1,0 +1,21 @@
+<div class="main-layout-root">
+  <div class="header-section">
+    <app-header (sidebarToggle)="onSidebarToggle($event)"></app-header>
+  </div>
+  
+  <div class="main-container">
+    <!-- Thêm class động để ẩn/hiện sidebar dựa vào trạng thái -->
+    <div class="sidebar-section" [class.sidebar-visible]="isSidebarVisible">
+      <app-sidebar></app-sidebar>
+    </div>
+    
+    <!-- Thêm overlay khi sidebar hiện trên mobile -->
+    <div *ngIf="isSidebarVisible" class="sidebar-overlay" (click)="onSidebarToggle(false)"></div>
+    
+    <div class="content-wrapper">
+      <div class="main-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

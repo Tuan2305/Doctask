@@ -1,0 +1,38 @@
+<nz-badge [nzCount]="unreadNotificationCount" [nzShowZero]="false" class="header-badge">
+  <div class="icon-container notification-icon"
+       nz-popover
+       nzPlacement="bottomRight"
+       [nzPopoverContent]="notificationTpl"
+       [nzPopoverTrigger]="'click'"
+       [(nzPopoverVisible)]="isPopoverVisible"
+       (nzPopoverVisibleChange)="onPopoverVisibleChange($event)"
+       [nzPopoverOverlayClassName]="'notification-popover-overlay'">
+    <span nz-icon nzType="bell" nzTheme="outline" class="header-icon-white"></span>
+  </div>
+</nz-badge>
+
+<ng-template #notificationTpl>
+  <div class="notification-popover-content">
+    <div class="notification-header">
+      <span class="notification-title">Thông báo</span>
+    </div>
+    <div class="notification-list-body">
+      <ng-container *ngIf="notifications.length > 0; else noNotifications">
+        <nz-list [nzDataSource]="notifications" [nzRenderItem]="notificationItemTpl">
+          <ng-template #notificationItemTpl let-notification>
+            <nz-list-item class="notification-item" [ngClass]="{'unread': !notification.isRead}" (click)="onNotificationClick(notification)">
+              <div class="notification-time">{{ notification.createdAt | date:'HH:mm dd/MM/yyyy' }}</div>
+              <div class="notification-message">{{ notification.message }}</div>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </ng-container>
+      <ng-template #noNotifications>
+        <div class="empty-notification">
+          <div class="notification-time">17:01 08/09/2025</div>
+          <div class="notification-message">Danh sách trống !</div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</ng-template>

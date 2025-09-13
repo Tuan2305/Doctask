@@ -1,0 +1,86 @@
+// Các biến responsive
+$breakpoint-mobile: 576px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 992px;
+
+.main-layout-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+   background-color: #ffffff;
+}
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  background-color: #ffffff; // Thay đổi từ #f0f2f5 thành #ffffff
+  
+  @media (max-width: $breakpoint-mobile) {
+    padding: 0;
+  }
+}
+.header-section {
+  width: 100%;
+  z-index: 10;
+}
+
+.main-container {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 68px);
+  overflow: hidden;
+  position: relative;
+}
+
+// Responsive cho sidebar
+.sidebar-section {
+  height: 100%;
+  z-index: 1000;
+  background-color: white;
+  transition: transform 0.3s ease;
+  
+  @media (max-width: $breakpoint-tablet) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    transform: translateX(-100%);
+    z-index: 1001;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+    &.sidebar-visible {
+      transform: translateX(0);
+    }
+  }
+}
+
+// Overlay khi sidebar hiển thị trên mobile
+.sidebar-overlay {
+  display: none;
+  
+  @media (max-width: $breakpoint-tablet) {
+    display: block;
+    position: fixed;
+    top: 68px; // Chiều cao của header
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+  }
+}
+
+
+.main-content {
+  flex: 1;
+  padding: 0; // Loại bỏ padding để layout gọn gàng hơn
+  overflow-y: auto;
+  background-color: #ffffff; // Đảm bảo background trắng
+  
+  @media (max-width: $breakpoint-mobile) {
+    padding: 0;
+  }
+}
