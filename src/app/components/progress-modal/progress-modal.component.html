@@ -1,44 +1,46 @@
-<form nz-form [formGroup]="progressForm" (ngSubmit)="submitForm()">
+<form nz-form [formGroup]="progressForm" class="progress-update-form">
+  <h2 class="modal-title">Cập nhật tiến độ</h2>
+
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="percentageComplete">Hoàn thành (%)</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập phần trăm hoàn thành!">
-      <nz-slider
-        formControlName="percentageComplete"
-        [nzMin]="0"
-        [nzMax]="100"
-        [nzStep]="1"
-      ></nz-slider>
-      <nz-input-number
-        formControlName="percentageComplete"
-        [nzMin]="0"
-        [nzMax]="100"
-        [nzStep]="1"
-      ></nz-input-number>
+    <nz-form-label nzRequired>Kiến nghị đề xuất</nz-form-label>
+    <nz-form-control>
+      <input nz-input formControlName="suggestion" placeholder="Text" />
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="status">Trạng thái</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn trạng thái!">
-      <nz-select formControlName="status" id="status" nzPlaceHolder="Chọn trạng thái">
-        <nz-option nzLabel="Chờ duyệt" nzValue="pending"></nz-option>
-        <nz-option nzLabel="Đang tiến hành" nzValue="in_progress"></nz-option>
-        <nz-option nzLabel="Hoàn thành" nzValue="completed"></nz-option>
-        <nz-option nzLabel="Trì hoãn" nzValue="delayed"></nz-option>
-      </nz-select>
+    <nz-form-label nzRequired>Kết quả công việc</nz-form-label>
+    <nz-form-control>
+      <input nz-input formControlName="result" placeholder="Text" />
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="comment">Nhận xét</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24">
-      <textarea nz-input formControlName="comment" id="comment" nzAutosize></textarea>
+    <nz-form-label nzRequired>Feedback</nz-form-label>
+    <nz-form-control>
+      <input nz-input formControlName="feedback" placeholder="Text" />
     </nz-form-control>
   </nz-form-item>
 
-  <div nz-row nzJustify="end" class="modal-footer">
-    <button nz-button nzType="default" (click)="closeModal()" [disabled]="isLoading">Hủy</button>
-    <button nz-button nzType="primary" (click)="submitForm()" [nzLoading]="isLoading" [disabled]="!progressForm.valid" class="ml-8">
+  <nz-form-item>
+    <nz-form-label>File báo cáo</nz-form-label>
+    <nz-form-control>
+      <!-- <nz-upload
+        nzAction=""
+        [nzShowUploadList]="false"
+        [nzCustomRequest]="customUploadRequest"
+      > -->
+        <button nz-button nzType="default">
+          <span nz-icon nzType="upload"></span>
+          Upload
+        </button>
+      <!-- </nz-upload> -->
+    </nz-form-control>
+  </nz-form-item>
+
+  <div class="modal-footer">
+    <button nz-button nzType="default" (click)="closeModal()" [disabled]="isLoading">Hủy bỏ</button>
+    <button nz-button nzType="primary" (click)="submitForm()" [nzLoading]="isLoading">
       Cập nhật
     </button>
   </div>

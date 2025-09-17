@@ -8,7 +8,7 @@ import { provideNzIcons } from 'ng-zorro-antd/icon';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { authInterceptor } from './interceptor/auth.interceptor';
-import { icons } from './icons-provider';
+// import { icons } from './icons-provider';
 
 registerLocaleData(en);
 
@@ -18,6 +18,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideNzI18n(en_US),
-    provideNzIcons(icons)
+   
   ]
 };

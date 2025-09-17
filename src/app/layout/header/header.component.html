@@ -20,9 +20,8 @@
       Tổng hợp
     </button>
 
-    <button nz-button class="header-button notification-button">
-  <span nz-icon nzType="bell" nzTheme="outline"></span>
-</button>
+    <app-notification-popover [currentUser]="currentUser"></app-notification-popover>
+
     <div class="user-avatar-container">
       <nz-avatar 
         nzIcon="user" 

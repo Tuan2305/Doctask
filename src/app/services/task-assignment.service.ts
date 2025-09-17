@@ -66,11 +66,31 @@ export interface CreateParentTaskResponse {
   error: string | null;
 }
 
+export interface UpdateParentTaskRequest {
+  title: string;
+  description: string;
+  startDate: Date;
+  dueDate: Date;
+}
+
+export interface UpdateParentTaskResponse {
+  success: boolean;
+  message: string;
+  data: {
+    taskId: number;
+    title: string;
+    description: string;
+    startDate: string;
+    dueDate: string;
+  };
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class TaskAssignmentService {
-  private baseUrl = 'http://192.168.1.180:8888/api/v2/taskAssignment';
+  private baseUrl = 'http://192.168.1.181:8888/api/v2/taskAssignment';
 
   constructor(private http: HttpClient) { }
 
@@ -78,6 +98,21 @@ export class TaskAssignmentService {
     return this.http.get<SubordinateUsersResponse>(`${this.baseUrl}/get-subs-user-current`, {
       headers: this.getAuthHeaders()
     });
+  }
+
+  // Thêm method để update parent task
+  updateParentTask(taskId: number, request: UpdateParentTaskRequest): Observable<UpdateParentTaskResponse> {
+    console.log('API Update Request:', request);
+    
+    return this.http.put<UpdateParentTaskResponse>(`${this.baseUrl}/update-parenttask?taskId=${taskId}`, request, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      tap(response => console.log('API Update Response:', response)),
+      catchError(error => {
+        console.error('API Update Error:', error);
+        throw error;
+      })
+    );
   }
 
   getSubordinateUnits(): Observable<Unit[]> {
@@ -112,11 +147,6 @@ export class TaskAssignmentService {
     );
   }
 
-  updateParentTask(taskId: number, task: any): Observable<Task> {
-    return this.http.put<Task>(`${this.baseUrl}/update-parent-task/${taskId}`, task, {
-      headers: this.getAuthHeaders()
-    });
-  }
 
   private getAuthHeaders(): { [header: string]: string } {
     const token = localStorage.getItem('access_token');

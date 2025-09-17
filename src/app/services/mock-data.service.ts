@@ -1,3 +1,4 @@
+// src/app/services/mock-data.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Task, TaskStatus, TaskPriority } from '../models/task.model';
@@ -10,6 +11,13 @@ export interface TaskFilterOptions {
   assigneeId?: number;
   assignerId?: number;
   search?: string;
+}
+
+// ✅ Thêm interface này cho addNotification
+export interface AddNotificationRequest {
+  userId?: number; // cho phép undefined nếu chưa có assignee
+  message: string;
+  taskId?: number;
 }
 
 @Injectable({
@@ -27,20 +35,22 @@ export class MockDataService {
   currentUser$ = this._currentUser.asObservable();
 
   constructor() {
-    this.initializeMockData(); // Vẫn gọi phương thức này, nhưng nó sẽ rỗng
+    this.initializeMockData();
   }
 
-  // **ĐÃ LÀM RỖNG PHƯƠNG THỨC NÀY**
   private initializeMockData(): void {
-    // Không còn khởi tạo dữ liệu mẫu tự động nữa.
-    // Dữ liệu sẽ trống rỗng cho đến khi được thêm qua UI hoặc điền thủ công vào localStorage.
     console.log('MockDataService: Not initializing mock data. Local storage will be used as is.');
 
-    // Để đảm bảo người dùng 'admin' luôn có sẵn để đăng nhập nếu localStorage trống hoàn toàn
-    // bạn có thể giữ lại đoạn code sau, HOẶC xóa nó nếu bạn muốn tạo người dùng thủ công.
-    // Nếu xóa, bạn sẽ không đăng nhập được cho đến khi có user trong localStorage.
     if (!localStorage.getItem(this.LS_USERS_KEY)) {
-        const adminUser: User = { userId: 1, username: 'admin', password: 'password', fullName: 'Quản Trị Viên', email: 'admin@example.com', position: 'Admin', createdAt: new Date() };
+        const adminUser: User = { 
+          userId: 1, 
+          username: 'admin', 
+          password: 'password', 
+          fullName: 'Quản Trị Viên', 
+          email: 'admin@example.com', 
+          position: 'Admin', 
+          createdAt: new Date() 
+        };
         localStorage.setItem(this.LS_USERS_KEY, JSON.stringify([adminUser]));
         console.log('MockDataService: Created default admin user for login.');
     }
@@ -77,7 +87,6 @@ export class MockDataService {
 
     let filteredTasks = tasks.map(task => {
       const taskProgress = progress.find(p => p.taskId === task.taskId);
-      // Đảm bảo các trường có giá trị hợp lệ (không undefined)
       return {
         ...task,
         startDate: task.startDate ? new Date(task.startDate) : new Date(),
@@ -135,6 +144,7 @@ export class MockDataService {
     });
     localStorage.setItem(this.LS_PROGRESS_KEY, JSON.stringify(progressRecords));
 
+    // ✅ Sử dụng addNotification method
     this.addNotification({
       userId: newTask.assigneeId,
       message: `Bạn có một nhiệm vụ mới: "${newTask.title}".`,
@@ -148,7 +158,6 @@ export class MockDataService {
     let tasks: Task[] = JSON.parse(localStorage.getItem(this.LS_TASKS_KEY) || '[]');
     const index = tasks.findIndex(t => t.taskId === updatedTask.taskId);
     if (index > -1) {
-      // Đảm bảo createdAt luôn là một giá trị hợp lệ
       const createdAtValue = tasks[index].createdAt ? 
         new Date(tasks[index].createdAt) : new Date();
       
@@ -161,6 +170,7 @@ export class MockDataService {
 
       this.updateTaskProgress(updatedTask.taskId, updatedTask.progressPercentage || 0, updatedTask.status ?? 'pending').subscribe();
 
+      // ✅ Sử dụng addNotification method
       this.addNotification({
         userId: updatedTask.assigneeId ?? 0,
         message: `Nhiệm vụ "${updatedTask.title}" đã được cập nhật.`,
@@ -214,6 +224,8 @@ export class MockDataService {
     this.getTaskById(taskId).subscribe(task => {
       if (task) {
         this.updateTask({ ...task, status: status, progressPercentage: percentage }).subscribe();
+        
+        // ✅ Sử dụng addNotification method
         this.addNotification({
           userId: task.assigneeId,
           message: `Tiến độ nhiệm vụ "${task.title}" đã cập nhật thành ${percentage}%.`,
@@ -226,48 +238,81 @@ export class MockDataService {
   }
 
   // --- Notification Operations ---
-  getNotifications(userId: number | undefined): Observable<Notification[]> {
+  // ✅ Thêm method addNotification
+  addNotification(request: AddNotificationRequest): Observable<Notification> {
     const notifications: Notification[] = JSON.parse(localStorage.getItem(this.LS_NOTIFICATIONS_KEY) || '[]');
-    if (userId === undefined) {
-      return of([]);
-    }
-    return of(
-      notifications
-        .filter(n => n.userId === userId)
-        .map(n => ({ ...n, createdAt: new Date(n.createdAt) }))
-        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-    );
+    const newNotificationId = notifications.length > 0 ? Math.max(...notifications.map(n => n.notificationId)) + 1 : 1;
+    
+    const newNotification: Notification = {
+      notificationId: newNotificationId,
+      userId: request.userId,
+      message: request.message,
+      createdAt: new Date(),
+      isRead: false,
+      taskId: request.taskId
+    };
+    
+    notifications.push(newNotification);
+    localStorage.setItem(this.LS_NOTIFICATIONS_KEY, JSON.stringify(notifications));
+    
+    console.log('✅ Added notification:', newNotification);
+    return of(newNotification);
   }
 
-  getUnreadNotificationCount(userId: number | undefined): Observable<number> {
-    return this.getNotifications(userId).pipe(
-      map(notifications => notifications.filter(n => !n.isRead).length)
-    );
+  initializeNotifications(notifications: Notification[]): void {
+    localStorage.setItem('mock_notifications', JSON.stringify(notifications));
+  }
+
+  getNotifications(userId?: number): Observable<Notification[]> {
+    // ✅ Sử dụng cùng key với addNotification
+    const notifications = JSON.parse(localStorage.getItem(this.LS_NOTIFICATIONS_KEY) || '[]');
+    const filteredNotifications = notifications.filter((n: Notification) => !userId || n.userId === userId);
+    
+    // ✅ Fallback to mock_notifications nếu không có notifications trong key chính
+    if (filteredNotifications.length === 0) {
+      const mockNotifications = JSON.parse(localStorage.getItem('mock_notifications') || '[]');
+      return of(mockNotifications.filter((n: Notification) => !userId || n.userId === userId));
+    }
+    
+    return of(filteredNotifications);
   }
 
   markNotificationAsRead(notificationId: number): Observable<boolean> {
-    let notifications: Notification[] = JSON.parse(localStorage.getItem(this.LS_NOTIFICATIONS_KEY) || '[]');
-    const index = notifications.findIndex(n => n.notificationId === notificationId);
-    if (index > -1) {
-      notifications[index].isRead = true;
-      localStorage.setItem(this.LS_NOTIFICATIONS_KEY, JSON.stringify(notifications));
-      return of(true);
+    // ✅ Cập nhật cả hai key để đồng bộ
+    const mainNotifications = JSON.parse(localStorage.getItem(this.LS_NOTIFICATIONS_KEY) || '[]');
+    const mockNotifications = JSON.parse(localStorage.getItem('mock_notifications') || '[]');
+    
+    // Update main notifications
+    const mainNotification = mainNotifications.find((n: Notification) => n.notificationId === notificationId);
+    if (mainNotification) {
+      mainNotification.isRead = true;
+      localStorage.setItem(this.LS_NOTIFICATIONS_KEY, JSON.stringify(mainNotifications));
     }
-    return of(false);
+    
+    // Update mock notifications for backward compatibility
+    const mockNotification = mockNotifications.find((n: Notification) => n.notificationId === notificationId);
+    if (mockNotification) {
+      mockNotification.isRead = true;
+      localStorage.setItem('mock_notifications', JSON.stringify(mockNotifications));
+    }
+    
+    return of(true);
   }
 
-  addNotification(notificationData: Omit<Notification, 'notificationId' | 'createdAt' | 'isRead'>): Observable<Notification> {
-    let notifications: Notification[] = JSON.parse(localStorage.getItem(this.LS_NOTIFICATIONS_KEY) || '[]');
-    const newNotificationId = notifications.length > 0 ? Math.max(...notifications.map(n => n.notificationId)) + 1 : 1;
-    const newNotification: Notification = {
-      notificationId: newNotificationId,
-      createdAt: new Date(),
-      isRead: false,
-      ...notificationData
-    };
-    notifications.push(newNotification);
-    localStorage.setItem(this.LS_NOTIFICATIONS_KEY, JSON.stringify(notifications));
-    return of(newNotification);
+  deleteNotification(notificationId: number): Observable<boolean> {
+    // ✅ Xóa từ cả hai key để đồng bộ
+    const mainNotifications = JSON.parse(localStorage.getItem(this.LS_NOTIFICATIONS_KEY) || '[]');
+    const mockNotifications = JSON.parse(localStorage.getItem('mock_notifications') || '[]');
+    
+    // Delete from main notifications
+    const updatedMainNotifications = mainNotifications.filter((n: Notification) => n.notificationId !== notificationId);
+    localStorage.setItem(this.LS_NOTIFICATIONS_KEY, JSON.stringify(updatedMainNotifications));
+    
+    // Delete from mock notifications for backward compatibility
+    const updatedMockNotifications = mockNotifications.filter((n: Notification) => n.notificationId !== notificationId);
+    localStorage.setItem('mock_notifications', JSON.stringify(updatedMockNotifications));
+    
+    return of(true);
   }
 
   // --- Other User Operations ---

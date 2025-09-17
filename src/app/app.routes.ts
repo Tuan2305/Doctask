@@ -31,7 +31,10 @@ export const routes: Routes = [
       { path: 'tasks', component: TaskManagementComponent },
       { path: 'task-assignment', component: TaskAssignmentComponent },
       { path: 'assigned-tasks', component: AssignedTasksComponent },
-      { path: 'documents', component: DocumentsComponent },
+      {
+          path: 'documents', 
+          component: DocumentsComponent
+        },
       { path: 'automation', component: AutomationComponent },
       { path: 'ai-agent', component: AiAgentComponent }
     ]

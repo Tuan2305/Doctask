@@ -29,11 +29,11 @@
   <div class="task-list-container" *ngIf="!loading">
     <ng-container *ngIf="displayTasks && displayTasks.length > 0; else noTasks">
       <div class="task-item" *ngFor="let task of displayTasks" (mouseenter)="onTaskHover(task)" (mouseleave)="onTaskLeave()">
+        <span nz-icon nzType="file-text" nzTheme="outline"></span>
         <!-- Task content -->
         <div class="task-content">
-          <div class="task-icon">
-            <span nz-icon nzType="file-text" nzTheme="outline"></span>
-          </div>
+          <!-- <div class="task-icon"> -->
+          <!-- </div> -->
           <div class="task-info">
             <div class="task-title">{{ task.title }}</div>
             <div class="task-meta">

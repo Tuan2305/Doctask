@@ -13,7 +13,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { Task, TaskStatus } from '../../models/task.model';
 import { TaskFormModalComponent } from '../../components/task-form-modal/task-form-modal.component';
 import { ProgressModalComponent } from '../../components/progress-modal/progress-modal.component';
-// import { TaskAssignmentModalComponent } from '../../components/task-assignment-modal/task-assignment-modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { User } from '../../models/user.model';
 import { forkJoin, map, of, Observable, catchError } from 'rxjs';
@@ -42,7 +41,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 })
 export class TaskManagementComponent implements OnInit {
   listOfTasks: Task[] = [];
-  displayTasks: Task[] = [];
+  displayTasks: Task[] = []; // ✅ Sửa: khai báo đúng property displayTasks
   searchText = '';
   loading = false;
   pageSize = 10;
@@ -109,77 +108,144 @@ export class TaskManagementComponent implements OnInit {
     this.loadTasks();
   }
 
-  // Sửa: Xóa nzTitle vì không được hỗ trợ trong NG-ZORRO-ANTD
-  // openTaskAssignmentModal(task?: Task): void {
-  //   const isParentTask = !task;
-  //   const modalRef = this.modal.create({
-  //     nzContent: TaskAssignmentModalComponent,
-  //     nzWidth: 700,
-  //     nzData: {
-  //       parentTask: task || null,
-  //       isChildTask: !isParentTask
-  //     },
-  //     nzFooter: null
-  //   });
-
-  //   modalRef.afterClose.subscribe(result => {
-  //     if (result) {
-  //       this.message.success(isParentTask ? 'Tạo nhiệm vụ thành công!' : 'Phân công nhiệm vụ thành công!');
-  //       this.loadTasks();
-  //     }
-  //   });
-  // }
-
-  // // Sửa: Xóa nzTitle
-  // openTaskFormModal(task?: Task): void {
-  //   const isEdit = !!task;
-  //   const modalRef = this.modal.create({
-  //     nzContent: TaskFormModalComponent,
-  //     nzWidth: 600,
-  //     nzData: {
-  //       task: task || null,
-  //       assignerId: this.currentUser?.userId
-  //     },
-  //     nzFooter: null
-  //   });
-
-  //   modalRef.afterClose.subscribe(result => {
-  //     if (result) {
-  //       this.message.success(isEdit ? 'Cập nhật nhiệm vụ thành công!' : 'Thêm nhiệm vụ thành công!');
-  //       this.loadTasks();
-  //     }
-  //   });
-  // }
-
-  // // Sửa: Xóa nzTitle
-  // openProgressModal(task: Task): void {
-  //   const modalRef = this.modal.create({
-  //     nzContent: ProgressModalComponent,
-  //     nzWidth: 500,
-  //     nzData: {
-  //       taskId: task.taskId,
-  //       currentProgress: task.progressPercentage || 0,
-  //       currentStatus: task.status
-  //     },
-  //     nzFooter: null
-  //   });
-
-  //   modalRef.afterClose.subscribe(result => {
-  //     if (result) {
-  //       this.message.success('Cập nhật tiến độ thành công!');
-  //       this.loadTasks();
-  //     }
-  //   });
-  // }
-  
-  // addSubtask(parentTask: Task): void {
-  //   this.openTaskAssignmentModal(parentTask);
-  // }
-
   getProgressColor(progress: number): string {
     if (progress >= 75) return '#52c41a';
     if (progress >= 50) return '#1890ff'; 
     if (progress >= 25) return '#faad14';
     return '#f5222d';
+  }
+
+  getStatusColor(status: TaskStatus): string {
+    switch (status) {
+      case 'completed': return 'green';
+      case 'in_progress': return 'blue';
+      case 'delayed': return 'red';
+      case 'pending': 
+      default: return 'default';
+    }
+  }
+
+  getStatusText(status: TaskStatus): string {
+    switch (status) {
+      case 'completed': return 'Hoàn thành';
+      case 'in_progress': return 'Đang thực hiện';
+      case 'delayed': return 'Trì hoãn';
+      case 'pending': 
+      default: return 'Chờ xử lý';
+    }
+  }
+
+  // ✅ Sửa: tạo method updateDisplayTasks đúng cách
+  private updateDisplayTasks(): void {
+    let filteredTasks = this.listOfTasks;
+
+    // Filter by search text if needed
+    if (this.searchText) {
+      filteredTasks = this.listOfTasks.filter(task =>
+        task.title.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        (task.description && task.description.toLowerCase().includes(this.searchText.toLowerCase()))
+      );
+    }
+
+    // Update displayTasks
+    this.displayTasks = filteredTasks;
+    this.total = filteredTasks.length;
+  }
+
+  async openEditTaskModal(task: Task): Promise<void> {
+    try {
+      // Dynamic import EditParentTaskModalComponent
+      const { EditParentTaskModalComponent } = await import('../../components/edit-parent-task-modal/edit-parent-task-modal.component');
+      
+      const modalRef = this.modal.create({
+        nzContent: EditParentTaskModalComponent,
+        nzWidth: 700,
+        nzData: {
+          task: task
+        },
+        nzFooter: null,
+        nzMaskClosable: false,
+        nzClosable: false
+      });
+
+      modalRef.afterClose.subscribe(result => {
+        if (result && result.success) {
+          this.message.success('Cập nhật công việc thành công!');
+          
+          // Cập nhật task trong danh sách local
+          const taskIndex = this.listOfTasks.findIndex(t => t.taskId === task.taskId);
+          if (taskIndex !== -1) {
+            this.listOfTasks[taskIndex] = {
+              ...this.listOfTasks[taskIndex],
+              title: result.data.title,
+              description: result.data.description,
+              startDate: result.data.startDate,
+              dueDate: result.data.dueDate,
+              updatedAt: new Date()
+            };
+
+            // ✅ Sửa: gọi method updateDisplayTasks() đúng cách
+            this.updateDisplayTasks();
+          }
+          
+          // Reload để đảm bảo đồng bộ với server
+          setTimeout(() => {
+            this.loadTasks();
+          }, 500);
+        }
+      });
+    } catch (error) {
+      console.error('❌ Error loading EditParentTaskModal:', error);
+      this.message.error('Không thể mở modal sửa công việc');
+    }
+  }
+
+  // ✅ Thêm: Method để mở modal thêm subtask
+  async openAddSubtaskModal(parentTask: Task): Promise<void> {
+    try {
+      const { TaskAssignmentModalComponent } = await import('../../components/task-assignment-modal/task-assignment-modal');
+      
+      const modalRef = this.modal.create({
+        nzContent: TaskAssignmentModalComponent,
+        nzWidth: 700,
+        nzData: {
+          parentTask: parentTask,
+          isChildTask: true
+        },
+        nzFooter: null,
+        nzMaskClosable: false
+      });
+
+      modalRef.afterClose.subscribe(result => {
+        if (result) {
+          this.message.success('Thêm việc con thành công!');
+          this.loadTasks();
+        }
+      });
+    } catch (error) {
+      console.error('Error loading TaskAssignmentModal:', error);
+      this.message.error('Không thể mở modal thêm việc con');
+    }
+  }
+
+  // ✅ Thêm: Method để mở modal tiến độ
+  openProgressModal(task: Task): void {
+    const modalRef = this.modal.create({
+      nzContent: ProgressModalComponent,
+      nzWidth: 500,
+      nzData: {
+        taskId: task.taskId,
+        currentProgress: task.progressPercentage || task.percentageComplete || 0,
+        currentStatus: task.status || 'pending'
+      },
+      nzFooter: null
+    });
+
+    modalRef.afterClose.subscribe(result => {
+      if (result) {
+        this.message.success('Cập nhật tiến độ thành công!');
+        this.loadTasks();
+      }
+    });
   }
 }

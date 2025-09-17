@@ -1,21 +1,22 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+// src/app/layout/header/header.component.ts
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
-// import { NotificationModule } from '../../components/notification-popover/notification.module';
+import { User } from '../../models/user.model';
+import { NotificationPopoverComponent } from '../../components/notification-popover/notification-popover.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
-   CommonModule, 
+    CommonModule, 
     RouterModule,
     NzButtonModule, 
     NzIconModule, 
@@ -23,17 +24,18 @@ import { AuthService } from '../../services/auth.service';
     NzAvatarModule,
     NzPopoverModule,
     NzMenuModule,
- 
+    NotificationPopoverComponent // Thêm import này
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  @Input() currentUser: User | null = null;
-  @Output() logoutEvent = new EventEmitter<void>();
   @Output() sidebarToggle = new EventEmitter<boolean>();
-  isUserPopoverVisible = false;
+  @Output() logoutEvent = new EventEmitter<void>();
   
+  currentUser: User | null = null;
+  isUserPopoverVisible = false;
+
   constructor(
     private router: Router,
     private authService: AuthService
@@ -54,7 +56,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigate([route]);
     this.isUserPopoverVisible = false; // Đóng popover sau khi điều hướng
   }
-  
+
   logout(): void {
     this.authService.logout();
     this.logoutEvent.emit();
@@ -72,9 +74,10 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleSidebar() {
-  this.sidebarToggle.emit(true); // hoặc false tùy trạng thái
-}
-navigateToTaskAssignment(): void {
-  this.router.navigate(['/task-assignment']);
-}
+    this.sidebarToggle.emit(true); // hoặc false tùy trạng thái
+  }
+
+  navigateToTaskAssignment(): void {
+    this.router.navigate(['/task-assignment']);
+  }
 }

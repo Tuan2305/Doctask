@@ -126,12 +126,12 @@ $bg-light: #ffffff;
           justify-content: center;
           width: 40px;
           height: 40px;
-          background: #f6f6f6;
+          background: #ffffff;
           border-radius: 8px;
 
           span {
             font-size: 18px;
-            color: $text-secondary;
+            color: rgb(0, 0, 0);
           }
         }
 
@@ -148,20 +148,24 @@ $bg-light: #ffffff;
 
           .task-meta {
             display: flex;
-            align-items: center;
-            gap: 24px;
-            font-size: 14px;
-            color: $text-secondary;
-
-            .task-date, .task-assignee {
-              display: flex;
+            gap: 6px;
+            .task-date,
+            .task-assignee {
+              display: inline-flex;
               align-items: center;
               gap: 6px;
-
-              span[nz-icon] {
-                font-size: 14px;
-              }
+              background: #fff;
+              border: 1px solid #e4e4e4;
+              border-radius: 20px;
+              padding: 4px 12px;
+              font-size: 14px;
+              color: #000000;
+              box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+              // width: auto;
+              max-width: 100%;
+              white-space: nowrap;
             }
+          
 
             @media (max-width: 768px) {
               flex-direction: column;
@@ -180,7 +184,6 @@ $bg-light: #ffffff;
 
         .progress-bar-container {
           width: 100%;
-
           ::ng-deep .ant-progress {
             .ant-progress-outer {
               .ant-progress-inner {

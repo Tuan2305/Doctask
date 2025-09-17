@@ -64,18 +64,19 @@
 
           <!-- Action buttons -->
           <div class="task-actions">
-            <button nz-button class="add-subtask-btn" nzType="primary" nzSize="small" >
-              Thêm việc con
-            </button>
-            <button nz-button class="progress-btn" nzType="primary" nzSize="small">
-               <!-- (click)="openProgressModal(task) -->
-              Tiến độ
-            </button>
-            <button nz-button class="edit-btn" nzType="primary" nzSize="small" >
-              <!-- (click)="openTaskFormModal(task)" -->
-              Sửa
-            </button>
-          </div>
+  <button nz-button class="add-subtask-btn" nzType="primary" nzSize="small" (click)="openAddSubtaskModal(task)">
+    <!-- <span nz-icon nzType="plus"></span> -->
+    Thêm việc con
+  </button>
+  <button nz-button class="progress-btn" nzType="primary" nzSize="small" (click)="openProgressModal(task)">
+    <!-- <span nz-icon nzType="percentage"></span> -->
+    Tiến độ
+  </button>
+  <button nz-button class="edit-btn" nzType="primary" nzSize="small" (click)="openEditTaskModal(task)">
+    <!-- <span nz-icon nzType="edit"></span> -->
+    Sửa
+  </button>
+</div>
         </div>
       </ng-container>
       

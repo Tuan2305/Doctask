@@ -1,0 +1,198 @@
+<!-- src/app/pages/documents/documents.component.html -->
+<div class="documents-page">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <div class="page-title">
+        <span nz-icon nzType="folder" nzTheme="outline" class="title-icon"></span>
+        <h3>Quản lý tài liệu</h3>
+      </div>
+    </div>
+    <div class="header-right">
+      <!-- Search -->
+      <div class="search-container">
+        <nz-input-group [nzSuffix]="suffixIconSearch" class="search-input">
+          <input 
+            type="text" 
+            nz-input 
+            placeholder="Tìm kiếm tài liệu..." 
+            [(ngModel)]="searchText" 
+            (keyup.enter)="onSearch()"
+            (input)="onSearch()" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <span nz-icon nzType="search" (click)="onSearch()"></span>
+        </ng-template>
+      </div>
+
+      <!-- Upload button -->
+      <nz-upload
+        nzAction=""
+        [nzCustomRequest]="customUploadRequest"
+        (nzChange)="handleUploadChange($event)"
+        nzMultiple
+        [nzShowUploadList]="false">
+        <button nz-button nzType="primary" [nzLoading]="uploading" class="upload-btn">
+          <span nz-icon nzType="upload"></span>
+          {{ uploading ? 'Đang tải lên...' : 'Tải lên' }}
+        </button>
+      </nz-upload>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="page-content">
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-container">
+      <nz-spin nzTip="Đang tải danh sách tài liệu..."></nz-spin>
+    </div>
+
+    <!-- Documents list -->
+    <div *ngIf="!loading" class="documents-container">
+      <ng-container *ngIf="filteredDocuments.length > 0; else noDocuments">
+        <!-- Table view -->
+        <nz-table 
+          #documentsTable 
+          [nzData]="filteredDocuments" 
+          [nzShowPagination]="true"
+          [nzPageSize]="10"
+          nzSize="middle"
+          class="documents-table">
+          
+          <thead>
+            <tr>
+              <th>Tên file</th>
+              <th>Loại</th>
+              <th>Ngày tải lên</th>
+              <!-- <th>Người tải lên</th> -->
+              <th nzWidth="200px">Thao tác</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            <tr *ngFor="let document of documentsTable.data">
+              <!-- File name with icon -->
+              <td>
+                <div class="file-info">
+                  <span 
+                    nz-icon 
+                    [nzType]="getFileIcon(document.fileName)" 
+                    nzTheme="fill"
+                    class="file-icon"
+                    [style.color]="getFileTypeColor(document.fileName)">
+                  </span>
+                  <span class="file-name" [title]="document.fileName">
+                    {{ document.fileName }}
+                  </span>
+                </div>
+              </td>
+              
+              <!-- File type -->
+              <td>
+                <nz-tag [nzColor]="getFileTypeColor(document.fileName)">
+                  {{ document.fileType }}
+                </nz-tag>
+              </td>
+              
+              <!-- Upload date -->
+              <td>{{ formatDate(document.uploadedAt) }}</td>
+              
+          
+              <td>
+                <div class="action-buttons">
+                  <button 
+                    nz-button 
+                    nzType="primary" 
+                    nzSize="small" 
+                    nz-tooltip="Xem tài liệu"
+                    (click)="viewDocument(document)">
+                    <span nz-icon nzType="eye"></span>
+                  </button>
+                  
+                  <button 
+                    nz-button 
+                    nzType="default" 
+                    nzSize="small" 
+                    nz-tooltip="Tải xuống"
+                    (click)="downloadDocument(document)">
+                    <span nz-icon nzType="download"></span>
+                  </button>
+                  
+                  <button 
+                    nz-button 
+                    nzType="default" 
+                    nzSize="small" 
+                    nz-tooltip="Đổi tên"
+                    (click)="editDocument(document)">
+                    <span nz-icon nzType="edit"></span>
+                  </button>
+                  
+                  <button 
+                    nz-button 
+                    nzType="primary" 
+                    nzDanger 
+                    nzSize="small" 
+                    nz-tooltip="Xóa"
+                    nz-popconfirm="Bạn có chắc chắn muốn xóa tài liệu này?"
+                    nzPopconfirmPlacement="top"
+                    (nzOnConfirm)="deleteDocument(document)">
+                    <span nz-icon nzType="delete"></span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </ng-container>
+
+      <!-- No documents -->
+      <ng-template #noDocuments>
+        <div class="empty-state">
+          <nz-empty 
+            nzText="Chưa có tài liệu nào"
+            [nzNotFoundImage]="'simple'">
+            <div nz-empty-footer>
+              <nz-upload
+                nzAction=""
+                [nzCustomRequest]="customUploadRequest"
+                (nzChange)="handleUploadChange($event)"
+                nzMultiple
+                [nzShowUploadList]="false">
+                <button nz-button nzType="primary">
+                  <span nz-icon nzType="upload"></span>
+                  Tải lên tài liệu đầu tiên
+                </button>
+              </nz-upload>
+            </div>
+          </nz-empty>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <nz-modal
+    [(nzVisible)]="isEditModalVisible"
+    nzTitle="Đổi tên tài liệu"
+    [nzOkText]="'Lưu'"
+    [nzCancelText]="'Hủy'"
+    (nzOnOk)="saveEdit()"
+    (nzOnCancel)="cancelEdit()"
+    [nzOkDisabled]="!editForm.valid">
+    
+    <ng-container *nzModalContent>
+      <form nz-form [formGroup]="editForm">
+        <nz-form-item>
+          <nz-form-label nzRequired>Tên file mới</nz-form-label>
+          <nz-form-control nzErrorTip="Vui lòng nhập tên file!">
+            <input 
+              nz-input 
+              formControlName="fileName" 
+              placeholder="Nhập tên file mới..."
+              maxlength="255" />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
+  </nz-modal>
+</div>

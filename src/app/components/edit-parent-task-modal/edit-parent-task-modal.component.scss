@@ -1,0 +1,164 @@
+// src/app/components/edit-parent-task-modal/edit-parent-task-modal.component.scss
+.edit-parent-task-modal {
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+
+    h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #262626;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      span[nz-icon] {
+        color: #52c41a; // Màu xanh lá cho icon edit
+        font-size: 20px;
+      }
+    }
+
+    .close-btn {
+      padding: 4px;
+      
+      &:hover {
+        background: #f5f5f5;
+      }
+    }
+  }
+
+  .edit-task-form {
+    .edit-section {
+      border: 1px solid #f0f0f0;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: #d9d9d9;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+
+        .section-label {
+          font-size: 14px;
+          font-weight: 500;
+          color: #333;
+        }
+
+        nz-switch {
+          ::ng-deep .ant-switch-checked {
+            background-color: #1890ff;
+          }
+        }
+      }
+
+      .input-container {
+        margin-top: 12px;
+        animation: fadeIn 0.3s ease-in-out;
+
+        .full-width {
+          width: 100%;
+        }
+
+        input, textarea {
+          border-radius: 6px;
+          
+          &:focus {
+            border-color: #1890ff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+          }
+        }
+
+        // Custom styling cho date picker
+        ::ng-deep .ant-picker {
+          width: 100%;
+          border-radius: 6px;
+
+          &.ant-picker-focused {
+            border-color: #1890ff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+          }
+        }
+      }
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid #f0f0f0;
+
+      .confirm-btn {
+        background: #1890ff;
+        border-color: #1890ff;
+        min-width: 100px;
+
+        &:hover:not(:disabled) {
+          background: #40a9ff;
+          border-color: #40a9ff;
+          transform: translateY(-1px);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+
+// Animation cho input container
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .edit-parent-task-modal {
+    .edit-task-form {
+      .edit-section {
+        padding: 12px;
+
+        .section-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+
+          .section-label {
+            font-size: 13px;
+          }
+        }
+      }
+
+      .modal-footer {
+        flex-direction: column;
+        gap: 8px;
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

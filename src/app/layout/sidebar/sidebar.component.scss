@@ -9,9 +9,11 @@
   padding: 0px 5px;
   height: 100%;
   // background-color: #fafafa;
-  width: 220px; /* width khi mở */
+  width: 210px; /* width khi mở */
   transition: width 0.35s ease; /* thêm transition */
   overflow: hidden; /* tránh tràn */
+  font-family: 'Poppins', sans-serif;
+
 }
 
 .wrapper.collapsed {

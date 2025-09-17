@@ -1,0 +1,118 @@
+<!-- src/app/components/edit-parent-task-modal/edit-parent-task-modal.component.html -->
+<div class="edit-parent-task-modal">
+  <div class="modal-header">
+    <h3>
+      <span nz-icon nzType="edit" nzTheme="outline"></span>
+      Sửa công việc
+    </h3>
+    <button nz-button nzType="text" class="close-btn" (click)="closeModal()">
+      <span nz-icon nzType="close"></span>
+    </button>
+  </div>
+
+  <form nz-form [formGroup]="editTaskForm" class="edit-task-form">
+    <!-- Sửa tên công việc mới -->
+    <nz-form-item>
+      <div class="edit-section">
+        <div class="section-header">
+          <span class="section-label">Sửa tên công việc mới</span>
+          <nz-switch 
+            [(ngModel)]="isEditingTitle"
+            [ngModelOptions]="{standalone: true}"
+            (ngModelChange)="toggleEditTitle()">
+          </nz-switch>
+        </div>
+        
+        <!-- Chỉ hiển thị input khi switch được bật -->
+        <div class="input-container" *ngIf="isEditingTitle">
+          <nz-form-control 
+            nzErrorTip="Vui lòng nhập tên công việc (tối đa 200 ký tự)!"
+            [nzValidateStatus]="editTaskForm.get('title')?.invalid && editTaskForm.get('title')?.touched ? 'error' : ''">
+            <input 
+              nz-input 
+              formControlName="title" 
+              placeholder="Nhập tên công việc..."
+              maxlength="200" />
+          </nz-form-control>
+        </div>
+      </div>
+    </nz-form-item>
+
+    <!-- Sửa nội dung công việc -->
+    <nz-form-item>
+      <div class="edit-section">
+        <div class="section-header">
+          <span class="section-label">Sửa nội dung công việc</span>
+          <nz-switch 
+            [(ngModel)]="isEditingDescription"
+            [ngModelOptions]="{standalone: true}"
+            (ngModelChange)="toggleEditDescription()">
+          </nz-switch>
+        </div>
+        
+        <!-- Chỉ hiển thị textarea khi switch được bật -->
+        <div class="input-container" *ngIf="isEditingDescription">
+          <nz-form-control nzErrorTip="Mô tả không được vượt quá 1000 ký tự!">
+            <textarea 
+              nz-input 
+              formControlName="description" 
+              [nzAutosize]="{ minRows: 4, maxRows: 8 }"
+              placeholder="Mô tả chi tiết về công việc..."
+              maxlength="1000">
+            </textarea>
+          </nz-form-control>
+        </div>
+      </div>
+    </nz-form-item>
+
+    <!-- Sửa thời hạn -->
+    <nz-form-item>
+      <div class="edit-section">
+        <div class="section-header">
+          <span class="section-label">Sửa thời hạn</span>
+          <nz-switch 
+            [(ngModel)]="isEditingTime"
+            [ngModelOptions]="{standalone: true}"
+            (ngModelChange)="toggleEditTime()">
+          </nz-switch>
+        </div>
+        
+        <!-- Chỉ hiển thị date picker khi switch được bật -->
+        <div class="input-container" *ngIf="isEditingTime">
+          <nz-form-control 
+            nzErrorTip="Vui lòng chọn thời gian bắt đầu và kết thúc!"
+            [nzValidateStatus]="editTaskForm.get('dateRange')?.invalid && editTaskForm.get('dateRange')?.touched ? 'error' : ''">
+            <nz-range-picker 
+              formControlName="dateRange" 
+              nzFormat="dd/MM/yyyy HH:mm"
+              nzShowTime
+              [nzPlaceHolder]="['Ngày bắt đầu', 'Ngày kết thúc']"
+              class="full-width">
+            </nz-range-picker>
+          </nz-form-control>
+        </div>
+      </div>
+    </nz-form-item>
+
+    <!-- Buttons -->
+    <div class="modal-footer">
+      <button 
+        nz-button 
+        nzType="default" 
+        (click)="closeModal()" 
+        [disabled]="isLoading">
+        Hủy bỏ
+      </button>
+      <button 
+        nz-button 
+        nzType="primary" 
+        type="button"
+        (click)="submitForm()"             
+        [nzLoading]="isLoading"
+        class="confirm-btn">
+        <span nz-icon nzType="check"></span>
+        Xác nhận
+      </button>
+    </div>
+  </form>
+</div>

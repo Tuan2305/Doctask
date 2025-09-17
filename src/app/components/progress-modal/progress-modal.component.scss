@@ -1,9 +1,40 @@
-.modal-footer {
-  margin-top: 24px;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 16px;
-  text-align: right;
-  button {
-    margin-left: 8px;
+.progress-update-form {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(24, 144, 255, 0.12);
+  padding: 32px 24px;
+
+  .modal-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 32px;
+  }
+
+  nz-form-label {
+    font-weight: bold;
+    font-size: 1rem;
+    width: 160px;
+  }
+
+  nz-form-control {
+    width: 100%;
+    max-width: 350px;
+    margin-left: 16px;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 32px;
+
+    button {
+      min-width: 100px;
+      font-size: 1rem;
+    }
   }
 }
