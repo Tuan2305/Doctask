@@ -265,7 +265,7 @@ export class DocumentsComponent implements OnInit {
       default: return 'default';
     }
   }
-
+  
   // Format date
   formatDate(date: string | Date): string {
     return new Date(date).toLocaleString('vi-VN');

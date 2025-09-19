@@ -1,0 +1,183 @@
+/* src/app/pages/task-detail/task-detail.component.scss */
+.task-detail-page {
+  padding: 24px;
+  background-color: #f0f2f5;
+  min-height: calc(100vh - 64px); /* Giả sử header cao 64px */
+}
+
+.task-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  background-color: #fff;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-left .page-title h3 {
+  margin: 0 0 0 8px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.header-right {
+  .search-input-container {
+    width: 200px; /* Tùy chỉnh độ rộng ô tìm kiếm */
+  }
+}
+
+.content-wrapper {
+  padding: 0;
+  border-radius: 8px;
+}
+
+.loading-container, .error-container, .no-data-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+  padding: 24px;
+}
+
+.task-main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.task-detail-card-layout {
+  background-color: #fff;
+  border-radius: 8px; // ✅ Bo tròn tổng thể thẻ chính
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+.task-card-header-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.task-title-detail {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.task-actions-detail {
+  display: flex;
+  gap: 8px;
+  .ant-btn-sm {
+    padding: 0 10px;
+    height: 28px;
+    line-height: 26px;
+  }
+  .review-btn {
+    background-color: #1890ff;
+    border-color: #1890ff;
+    color: #fff;
+  }
+  .edit-btn {
+    background-color: #52c41a;
+    border-color: #52c41a;
+    color: #fff;
+  }
+  .delete-btn {
+    background-color: #f5222d;
+    border-color: #f5222d;
+    color: #fff;
+  }
+}
+
+.task-meta-row-layout {
+  display: flex;
+  gap: 10px; // ✅ Điều chỉnh khoảng cách giữa các tag
+  margin-bottom: 16px;
+  color: #666;
+  font-size: 13px;
+
+  .meta-item-tag {
+    // ✅ Style cho tag thời gian và người thực hiện
+    height: 32px; // Chiều cao tag
+    line-height: 30px; // Căn giữa text
+    padding: 0 12px;
+    border-radius: 16px; // ✅ Bo tròn tag
+    background-color: #f0f0f0; // Màu nền nhẹ
+    border: 1px solid #d9d9d9; // Viền nhẹ
+    color: #333; // Màu chữ
+    display: inline-flex; // Để icon và text cùng dòng
+    align-items: center; // Căn giữa theo chiều dọc
+
+    .anticon {
+      margin-right: 6px; // Khoảng cách giữa icon và text
+      font-size: 16px; // Kích thước icon
+    }
+  }
+}
+
+.task-progress-report-row-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+  color: #666;
+  font-size: 13px;
+
+  .report-left {
+    display: flex;
+    gap: 10px; // ✅ Khoảng cách giữa các tag báo cáo
+
+    .report-item-tag {
+      // ✅ Style cho tag lịch báo cáo và nội dung
+      height: 32px;
+      line-height: 30px;
+      padding: 0 12px;
+      border-radius: 16px; // ✅ Bo tròn tag
+      background-color: #f0f0f0;
+      border: 1px solid #d9d9d9;
+      color: #333;
+      display: inline-flex;
+      align-items: center;
+
+      .anticon {
+        margin-right: 6px;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .report-right {
+    width: 200px;
+    .ant-progress-outer { // Đảm bảo thanh tiến độ không có nền trong suốt
+        background-color: #f0f0f0; // Có thể đặt màu nền cho thanh tiến độ
+        border-radius: 100px; // Bo tròn thanh tiến độ
+        .ant-progress-inner {
+            border-radius: 100px; // Bo tròn bên trong thanh tiến độ
+        }
+    }
+  }
+}
+
+.pagination-container-detail {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 24px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+}

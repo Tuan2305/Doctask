@@ -10,6 +10,7 @@ import { Task, TaskApiResponse, TaskStatus } from '../models/task.model';
 })
 export class TaskApiService {
   private baseUrl = `${environment.apiUrl}/api/v2/GetListTask`;
+  private baseUrl1 = `${environment.apiUrl}/api/v2`;
 
   constructor(private http: HttpClient) {}
 
@@ -135,6 +136,12 @@ export class TaskApiService {
       })
     );
   }
+
+    getTaskDetailById(taskId: number): Observable<any> {
+    // Với baseUrl đúng, URL sẽ là: http://192.168.1.181:8888/api/v2/review/by-task?taskId=...
+    return this.http.get<any>(`${this.baseUrl1}/review/by-task`, { params: { taskId: taskId.toString() } });
+  }
+
 
   getTasksByParent(parentTaskId: number, page: number = 1, pageSize: number = 10): Observable<{
     items: Task[];

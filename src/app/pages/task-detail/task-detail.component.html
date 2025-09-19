@@ -1,0 +1,98 @@
+<!-- src/app/pages/task-detail/task-detail.component.html -->
+<div class="task-detail-page">
+  <div class="task-page-header">
+    <div class="header-left">
+      <button nz-button nzType="text" (click)="goBack()">
+        <span nz-icon nzType="arrow-left" nzTheme="outline"></span>
+      </button>
+      <div class="page-title">
+        <h3>Chi tiết công việc quản lý</h3>
+      </div>
+    </div>
+    <div class="header-right">
+      <!-- Thêm ô tìm kiếm nếu bạn muốn có ở đây, giống như hình 2 -->
+      <div class="search-input-container">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input type="text" nz-input placeholder="Tìm kiếm công việc" [(ngModel)]="searchText" (keyup.enter)="onSearch()" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <span nz-icon nzType="search" (click)="onSearch()"></span>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <div *ngIf="loading" class="loading-container">
+      <nz-spin nzTip="Đang tải chi tiết công việc..."></nz-spin>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-container">
+      <nz-empty [nzNotFoundContent]="errorMessage"></nz-empty>
+      <button nz-button nzType="primary" (click)="goBack()">Quay lại</button>
+    </div>
+
+    <div *ngIf="taskDetail && !loading && !errorMessage" class="task-main-content">
+      <!-- Main Task Card - Phần giống Hình 2 -->
+      <div class="task-detail-card-layout">
+        <div class="task-card-header-layout">
+          <div class="task-title-detail">{{ taskDetail.taskName || 'Chưa có tên' }}</div>
+          <div class="task-actions-detail">
+            <button nz-button class="review-btn" nzType="primary" nzSize="small">Rà soát</button>
+            <button nz-button class="edit-btn" nzType="primary" nzSize="small">Sửa</button>
+            <button nz-button class="delete-btn" nzType="primary" nzDanger nzSize="small">Xóa</button>
+          </div>
+        </div>
+
+        <div class="task-meta-row-layout">
+          <!-- Bọc thời gian bằng nz-tag -->
+          <nz-tag class="meta-item-tag">
+            <span nz-icon nzType="calendar" nzTheme="outline"></span>
+            {{ taskDetail.startDate | date:'HH:mm dd/MM/yyyy' }} - {{ taskDetail.dueDate | date:'HH:mm dd/MM/yyyy' }}
+          </nz-tag>
+          <!-- Bọc người thực hiện bằng nz-tag -->
+          <nz-tag class="meta-item-tag">
+            <span nz-icon nzType="user" nzTheme="outline"></span>
+            <span *ngIf="taskDetail.assigneeFullNames && taskDetail.assigneeFullNames.length > 0">
+              {{ taskDetail.assigneeFullNames.join(', ') }}
+            </span>
+            <span *ngIf="!taskDetail.assigneeFullNames || taskDetail.assigneeFullNames.length === 0">
+              Người thực hiện
+            </span>
+          </nz-tag>
+        </div>
+
+        <div class="task-progress-report-row-layout">
+          <div class="report-left">
+            <!-- Bọc Lịch báo cáo theo ngày bằng nz-tag -->
+            <nz-tag class="report-item-tag">
+              <span nz-icon nzType="calendar" nzTheme="outline"></span> Lịch báo cáo theo ngày
+            </nz-tag>
+            <!-- Bọc Nội dung bằng nz-tag -->
+            <nz-tag class="report-item-tag">
+              <span nz-icon nzType="file-text" nzTheme="outline"></span> Nội dung
+            </nz-tag>
+          </div>
+          <div class="report-right">
+            <!-- Giả định taskDetail có progressPercentage hoặc percentageComplete -->
+            <nz-progress
+              [nzPercent]="taskDetail.progressPercentage || taskDetail.percentageComplete || 0"
+              nzSize="small"
+              [nzStrokeColor]="getProgressColor(taskDetail.progressPercentage || taskDetail.percentageComplete || 0)">
+            </nz-progress>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination - giống Hình 2 -->
+      <!-- <div class="pagination-container-detail">
+        <nz-pagination [nzPageIndex]="1" [nzPageSize]="10" [nzTotal]="1" nzSimple="true"></nz-pagination>
+      </div> -->
+    </div>
+
+    <div *ngIf="!taskDetail && !loading && !errorMessage" class="no-data-container">
+      <nz-empty nzText="Không tìm thấy chi tiết công việc"></nz-empty>
+      <button nz-button nzType="primary" (click)="goBack()">Quay lại</button>
+    </div>
+  </div>
+</div>

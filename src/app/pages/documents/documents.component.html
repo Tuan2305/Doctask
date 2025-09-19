@@ -62,7 +62,7 @@
           <thead>
             <tr>
               <th>Tên file</th>
-              <th>Loại</th>
+              <!-- <th>Loại</th> -->
               <th>Ngày tải lên</th>
               <!-- <th>Người tải lên</th> -->
               <th nzWidth="200px">Thao tác</th>
@@ -88,12 +88,12 @@
               </td>
               
               <!-- File type -->
-              <td>
-                <nz-tag [nzColor]="getFileTypeColor(document.fileName)">
-                  {{ document.fileType }}
-                </nz-tag>
-              </td>
-              
+                <!-- <td>
+                  <nz-tag [nzColor]="getFileTypeColor(document.fileName)">
+                    {{ document.fileType }}
+                  </nz-tag>
+                </td>
+                -->
               <!-- Upload date -->
               <td>{{ formatDate(document.uploadedAt) }}</td>
               

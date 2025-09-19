@@ -9,6 +9,7 @@ import { AiAgentComponent } from './pages/ai-agent/ai-agent.component';
 import { authGuard, loginGuard } from './guards/auth.guard';
 import {RegisterComponent} from './pages/register/register.component';
 import { TaskAssignmentComponent } from './pages/task-assignment/task-assignment.component';
+import { TaskDetailComponent } from './pages/task-detail/task-detail.component'; // Import TaskDetailComponent
 
 
 export const routes: Routes = [
@@ -29,6 +30,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'tasks', pathMatch: 'full' },
       { path: 'tasks', component: TaskManagementComponent },
+      { path: 'task-detail/:id', component: TaskDetailComponent }, // Route cho trang chi tiết
       { path: 'task-assignment', component: TaskAssignmentComponent },
       { path: 'assigned-tasks', component: AssignedTasksComponent },
       {

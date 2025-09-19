@@ -54,13 +54,22 @@
         border-radius: 10px;
         font-weight: 500;
         box-shadow: 0 2px 4px rgba(24, 144, 255, 0.2);
-        
+
 
         &:hover {
           transform: translateY(-1px);
           box-shadow: 0 4px 8px rgba(24, 144, 255, 0.3);
         }
       }
+
+      .ant-btn-primary {
+        color: #000000;
+        border-color: #f8f8f8;
+        background: #f7f5f5;
+        
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, .12);
+        box-shadow: 0 2px 0 rgba(0, 0, 0, .045);
+}
     }
   }
 

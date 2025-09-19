@@ -30,7 +30,7 @@
     <!-- Task list container -->
     <div class="task-list-container" *ngIf="!loading">
       <ng-container *ngIf="displayTasks && displayTasks.length > 0; else noTasks">
-        <div class="task-card" *ngFor="let task of displayTasks">
+        <div class="task-card" *ngFor="let task of displayTasks" (click)="goToTaskDetail(task.taskId)">
           <!-- Task content -->
           <div class="task-content">
             <div class="task-icon">
@@ -63,20 +63,21 @@
           </div>
 
           <!-- Action buttons -->
-          <div class="task-actions">
-  <button nz-button class="add-subtask-btn" nzType="primary" nzSize="small" (click)="openAddSubtaskModal(task)">
-    <!-- <span nz-icon nzType="plus"></span> -->
-    Thêm việc con
-  </button>
-  <button nz-button class="progress-btn" nzType="primary" nzSize="small" (click)="openProgressModal(task)">
-    <!-- <span nz-icon nzType="percentage"></span> -->
-    Tiến độ
-  </button>
-  <button nz-button class="edit-btn" nzType="primary" nzSize="small" (click)="openEditTaskModal(task)">
-    <!-- <span nz-icon nzType="edit"></span> -->
-    Sửa
-  </button>
-</div>
+          <!-- Có thể bạn không muốn các nút này kích hoạt điều hướng, 
+               mà chỉ riêng click vào vùng thẻ công việc thì điều hướng. 
+               Nếu vậy, hãy đảm bảo các nút này có event.stopPropagation()
+               để ngăn chặn sự kiện click lan truyền lên thẻ cha. -->
+          <div class="task-actions" (click)="$event.stopPropagation()"> 
+            <button nz-button class="add-subtask-btn" nzType="primary" nzSize="small" (click)="openAddSubtaskModal(task)">
+              Thêm việc con
+            </button>
+            <button nz-button class="progress-btn" nzType="primary" nzSize="small" (click)="openProgressModal(task)">
+              Tiến độ
+            </button>
+            <button nz-button class="edit-btn" nzType="primary" nzSize="small" (click)="openEditTaskModal(task)">
+              Sửa
+            </button>
+          </div>
         </div>
       </ng-container>
       

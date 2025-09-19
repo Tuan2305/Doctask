@@ -37,3 +37,16 @@ export interface TaskApiResponse {
   message: string;
   error: string | null;
 }
+
+export interface TaskDetail {
+      taskId: number;
+      taskName: string | null;
+      description: string;
+      assigneeFullNames: string[];
+      startDate: string; // ISO string date
+      dueDate: string;   // ISO string date
+      taskStatus: string; // e.g., "in_progress", "completed"
+      progresses: any[]; // Tùy thuộc cấu trúc của progresses
+      progressPercentage?: number; // ✅ Thêm thuộc tính này cho thanh tiến độ
+  percentageComplete?: number; 
+    }

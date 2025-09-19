@@ -1,4 +1,3 @@
-// src/app/pages/task-management/task-management.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,6 +18,7 @@ import { forkJoin, map, of, Observable, catchError } from 'rxjs';
 import { TaskApiService } from '../../services/task.service';
 import { AuthService } from '../../services/auth.service';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { Router } from '@angular/router'; // Import Router
 
 @Component({
   selector: 'app-task-management',
@@ -41,7 +41,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 })
 export class TaskManagementComponent implements OnInit {
   listOfTasks: Task[] = [];
-  displayTasks: Task[] = []; // ✅ Sửa: khai báo đúng property displayTasks
+  displayTasks: Task[] = [];
   searchText = '';
   loading = false;
   pageSize = 10;
@@ -54,7 +54,8 @@ export class TaskManagementComponent implements OnInit {
     private taskApiService: TaskApiService,
     private modal: NzModalService,
     private message: NzMessageService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router // Inject Router
   ) {
     this.displayTasks = [];
   }
@@ -70,6 +71,15 @@ export class TaskManagementComponent implements OnInit {
         this.total = 0;
       }
     });
+  }
+goToTaskDetail(taskId: number): void {
+    console.log('Đang cố gắng điều hướng đến chi tiết công việc với taskId:', taskId);
+    if (taskId) { // Đảm bảo taskId tồn tại và hợp lệ
+      this.router.navigate(['/task-detail', taskId]);
+    } else {
+      console.error('Không thể điều hướng: taskId không hợp lệ.', taskId);
+      this.message.error('Không thể xem chi tiết công việc do ID không hợp lệ.');
+    }
   }
 
   loadTasks(): void {
