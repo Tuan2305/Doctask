@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../environment/environment';
 import { Task, TaskApiResponse, TaskStatus } from '../models/task.model';
+import { TaskReviewResponse } from '../models/review.model';
 
 @Injectable({
   providedIn: 'root'
@@ -209,4 +210,29 @@ export class TaskApiService {
       this.getAuthHeaders()
     );
   }
+
+  getTaskReviews(taskId: number): Observable<TaskReviewResponse> {
+    return this.http.get<TaskReviewResponse>(
+      `${this.baseUrl1}/review/by-task`,
+      { params: { taskId: taskId.toString() } }
+    );
+  }
+
+  getTaskReviewFrequency(
+    taskId: number,
+    startDate: string, // Định dạng ISO string
+    endDate: string,   // Định dạng ISO string
+    page: number = 1,
+    pageSize: number = 10
+  ): Observable<TaskReviewResponse> {
+    const params = {
+      taskId: taskId.toString(),
+      startDate: startDate,
+      endDate: endDate,
+      page: page.toString(),
+      pageSize: pageSize.toString()
+    };
+    return this.http.get<TaskReviewResponse>(`${this.baseUrl}/review/by-task-frequency`, { params });
+  }
+
 }

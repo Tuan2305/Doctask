@@ -142,4 +142,12 @@ export class TaskDetailComponent implements OnInit {
     const totalPercentage = progresses.reduce((sum: number, p: any) => sum + (p.percentage || 0), 0);
     return Math.round(totalPercentage / progresses.length);
   }
+
+  goToTaskReview(taskId: number, taskTitle: string): void {
+    if (taskId) {
+      this.router.navigate(['/task-review', taskId], { state: { taskTitle: taskTitle } });
+    } else {
+      this.message.error('Không tìm thấy ID công việc để rà soát.');
+    }
+  }
 }

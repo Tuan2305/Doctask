@@ -10,7 +10,7 @@ import { authGuard, loginGuard } from './guards/auth.guard';
 import {RegisterComponent} from './pages/register/register.component';
 import { TaskAssignmentComponent } from './pages/task-assignment/task-assignment.component';
 import { TaskDetailComponent } from './pages/task-detail/task-detail.component'; // Import TaskDetailComponent
-
+import { TaskReviewComponent } from './pages/task-review/task-review.component';
 
 export const routes: Routes = [
   { 
@@ -33,6 +33,7 @@ export const routes: Routes = [
       { path: 'task-detail/:id', component: TaskDetailComponent }, // Route cho trang chi tiết
       { path: 'task-assignment', component: TaskAssignmentComponent },
       { path: 'assigned-tasks', component: AssignedTasksComponent },
+      { path: 'task-review/:id', component: TaskReviewComponent },
       {
           path: 'documents', 
           component: DocumentsComponent

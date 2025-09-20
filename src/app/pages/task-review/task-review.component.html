@@ -1,0 +1,100 @@
+<!-- src/app/pages/task-review/task-review.component.html -->
+<div class="task-review-page">
+  <div class="task-page-header">
+    <div class="header-left">
+      <button nz-button nzType="text" (click)="goBack()">
+        <span nz-icon nzType="arrow-left" nzTheme="outline"></span>
+      </button>
+      <div class="page-title">
+        <h3>{{ taskTitle }}</h3>
+      </div>
+    </div>
+    <div class="header-right">
+      <!-- Có thể thêm nút hành động chung ở đây -->
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Phần điều khiển lọc và hành động -->
+    <div class="review-controls-section">
+      <div class="filter-group">
+        <div class="filter-item">
+          <label>Chọn đối tượng rà soát</label>
+          <nz-select [(ngModel)]="selectedReviewObject" nzPlaceHolder="Bấm để chọn" class="filter-select">
+            <nz-option *ngFor="let obj of reviewObjects" [nzValue]="obj.value" [nzLabel]="obj.label"></nz-option>
+          </nz-select>
+        </div>
+        <div class="filter-item">
+          <label>Chọn thời gian rà soát</label>
+          <nz-range-picker
+            [(ngModel)]="dateRange"
+            (ngModelChange)="onDateRangeChange($event)"
+            [nzFormat]="'dd/MM/yyyy'"
+            [nzDisabledDate]="disabledDate"
+            nzPlaceHolder="Chọn ngày bắt đầu - Chọn ngày kết thúc"
+            class="filter-date-picker">
+          </nz-range-picker>
+        </div>
+        <button nz-button nzType="primary" (click)="onReview()" class="review-button">Rà soát</button>
+      </div>
+
+      <button nz-button nzType="primary" (click)="summarizeReport()" class="summarize-report-button">
+        Tổng hợp báo cáo
+      </button>
+    </div>
+
+    <!-- Loading state -->
+    <div *ngIf="loading" class="loading-container">
+      <nz-spin nzTip="Đang tải dữ liệu rà soát..."></nz-spin>
+    </div>
+
+    <!-- Error state -->
+    <div *ngIf="errorMessage && !loading" class="error-container">
+      <!-- <nz-empty [nzNotFoundContent]="errorMessage"></nz-empty> -->
+      <button nz-button nzType="primary" (click)="onReview()">Thử lại</button>
+    </div>
+
+    <!-- Table hiển thị dữ liệu rà soát -->
+    <div *ngIf="!loading && !errorMessage" class="review-table-container">
+      <nz-table
+        #basicTable
+        [nzData]="listOfData"
+        [nzFrontPagination]="false"
+        [nzTotal]="total"
+        [nzPageIndex]="pageIndex"
+        [nzPageSize]="pageSize"
+        (nzPageIndexChange)="onPageIndexChange($event)">
+        <thead>
+          <tr>
+            <th nzWidth="50px">
+              <label nz-checkbox></label>
+            </th>
+            <th>Đơn vị/Người thực hiện</th>
+            <th>Kỳ</th>
+            <th>Trạng thái</th>
+            <th>Kết quả</th>
+            <th>Đề xuất</th>
+            <th>Phản hồi</th>
+            <th>File đính kèm</th>
+            <th>Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td><label nz-checkbox></label></td>
+            <td>{{ data.userName }}</td>
+            <td><!-- Hiện tại API không trả về kỳ, có thể tính toán từ startDate/endDate --></td>
+            <td><!-- API không trả về trạng thái chi tiết, có thể dựa vào data.scheduledProgresses --></td>
+            <td><!-- Kết quả báo cáo --></td>
+            <td><!-- Đề xuất --></td>
+            <td><!-- Phản hồi --></td>
+            <td><!-- File đính kèm --></td>
+            <td>
+              <button nz-button nzType="primary" nzSize="small" (click)="remindUser(data.userId)">Nhắc nhở</button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
