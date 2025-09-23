@@ -57,7 +57,7 @@ export class AuthService {
     }
 
     return this.http.post<any>(
-      `${environment.apiUrl}/api/v2/refresh`,
+      `${environment.apiUrl}POST /api/v1/auth/refresh`,
       { refreshToken }
     ).pipe(
       map(response => {

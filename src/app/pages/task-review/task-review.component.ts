@@ -152,8 +152,9 @@ export class TaskReviewComponent implements OnInit {
     }
   }
 
+              
   remindUser(userId: number): void {
-    this.message.info(`Đang nhắc nhở người dùng có ID: ${userId}`);
+               this.message.info(`Đang nhắc nhở người dùng có ID: ${userId}`);
     // Thực hiện gọi API nhắc nhở tại đây
   }
 

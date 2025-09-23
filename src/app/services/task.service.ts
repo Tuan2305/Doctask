@@ -10,8 +10,8 @@ import { TaskReviewResponse } from '../models/review.model';
   providedIn: 'root'
 })
 export class TaskApiService {
-  private baseUrl = `${environment.apiUrl}/api/v2/GetListTask`;
-  private baseUrl1 = `${environment.apiUrl}/api/v2`;
+  private baseUrl = `${environment.apiUrl}/api/v1`;
+  private baseUrl1 = `${environment.apiUrl}/api/v1`;
 
   constructor(private http: HttpClient) {}
 
@@ -40,7 +40,7 @@ export class TaskApiService {
     }
 
     return this.http.get<TaskApiResponse>(
-      `${this.baseUrl}/by-assignee`, 
+      `${this.baseUrl}/task`, 
       { params, ...this.getAuthHeaders() }
     ).pipe(
       map(response => {
@@ -97,7 +97,7 @@ export class TaskApiService {
     }
 
     return this.http.get<TaskApiResponse>(
-      `${this.baseUrl}/by-assignedby`,
+      `${this.baseUrl}/subtask`,
       { params, ...this.getAuthHeaders() }
     ).pipe(
       map(response => {
@@ -134,7 +134,7 @@ export class TaskApiService {
           page: 1,
           pageSize: 10
         });
-      })
+      }) 
     );
   }
 
