@@ -21,6 +21,7 @@ $text-secondary: #8c8c8c;
     border-bottom: none;
     margin-bottom: 0;
 
+
     @media (max-width: 768px) {
       flex-direction: column;
       gap: 12px;
@@ -63,8 +64,8 @@ $text-secondary: #8c8c8c;
 
         h3 {
           margin: 0;
-          font-size: 16px;
-          font-weight: 500;
+          font-size: 20px;
+          font-weight: 700;
           color: $text-color;
         }
       }

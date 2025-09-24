@@ -36,6 +36,7 @@
       <!-- Main Task Card -->
       <div class="task-detail-card-layout">
         <div class="task-card-header-layout">
+          
           <div class="task-title-detail">{{ taskDetail.taskName || 'Chưa có tên' }}</div>
           <div class="task-actions-detail">
             <button nz-button class="review-btn" nzType="primary" nzSize="small" (click)="goToTaskReview(taskDetail.taskId, taskDetail.taskName || taskDetail.description)">Rà soát</button>

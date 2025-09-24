@@ -90,7 +90,7 @@ export interface UpdateParentTaskResponse {
   providedIn: 'root'
 })
 export class TaskAssignmentService {
-  private baseUrl = 'http://localhost:5168/api/v2/taskAssignment';
+  private baseUrl = 'http://192.168.2.180:8888/api/v2/taskAssignment';
 
   constructor(private http: HttpClient) { }
 

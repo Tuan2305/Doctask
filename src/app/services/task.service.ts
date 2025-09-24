@@ -10,8 +10,8 @@ import { TaskReviewResponse } from '../models/review.model';
   providedIn: 'root'
 })
 export class TaskApiService {
-  private baseUrl = `${environment.apiUrl}/api/v1`;
-  private baseUrl1 = `${environment.apiUrl}/api/v1`;
+  private baseUrl = `${environment.apiUrl}/api/v2/GetListTask`;
+  private baseUrl1 = `${environment.apiUrl}/api/v2`;
 
   constructor(private http: HttpClient) {}
 
@@ -40,7 +40,7 @@ export class TaskApiService {
     }
 
     return this.http.get<TaskApiResponse>(
-      `${this.baseUrl}/task`, 
+      `${this.baseUrl}/by-assignee`, 
       { params, ...this.getAuthHeaders() }
     ).pipe(
       map(response => {
@@ -97,7 +97,7 @@ export class TaskApiService {
     }
 
     return this.http.get<TaskApiResponse>(
-      `${this.baseUrl}/subtask`,
+      `${this.baseUrl}/by-assignedby`,
       { params, ...this.getAuthHeaders() }
     ).pipe(
       map(response => {
@@ -234,5 +234,16 @@ export class TaskApiService {
     };
     return this.http.get<TaskReviewResponse>(`${this.baseUrl}/review/by-task-frequency`, { params });
   }
+
+  getTaskParentDetail(parentTaskId: number): Observable<any> {
+  return this.http.get<any>(
+    `http://192.168.2.180:8888/api/v2/review/detail-TaskParent?parentTaskId=${parentTaskId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+      }
+    }
+  );
+}
 
 }

@@ -40,7 +40,7 @@ export class LoginService {
 
   login(username: string, password: string): Observable<User> {
     return this.http.post<LoginApiResponse>(
-      `${environment.apiUrl}/api/v1/auth/login`, 
+      `${environment.apiUrl}/api/v2/login`, 
       { username, password }
     ).pipe(
       map(response => {
@@ -103,6 +103,6 @@ export class LoginService {
     phoneNumber: string;
     role: number;
   }): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/api/v1//auth/register`, userData);
+    return this.http.post(`${environment.apiUrl}/api/v2/register`, userData);
   }
 }

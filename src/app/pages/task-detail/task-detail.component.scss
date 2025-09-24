@@ -1,7 +1,7 @@
 /* src/app/pages/task-detail/task-detail.component.scss */
 .task-detail-page {
   padding: 24px;
-  background-color: #f0f2f5;
+  background-color: #ffffff;
   min-height: calc(100vh - 64px); /* Giả sử header cao 64px */
 }
 
@@ -9,11 +9,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+   margin-bottom: 24px;
   background-color: #fff;
-  padding: 16px 24px;
+  // padding: 4px ;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+  // box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
 }
 
 .header-left {
@@ -107,7 +107,7 @@
   display: flex;
   gap: 10px; // ✅ Điều chỉnh khoảng cách giữa các tag
   margin-bottom: 16px;
-  color: #666;
+  color: #ffffff;
   font-size: 13px;
 
   .meta-item-tag {
@@ -116,11 +116,12 @@
     line-height: 30px; // Căn giữa text
     padding: 0 12px;
     border-radius: 16px; // ✅ Bo tròn tag
-    background-color: #f0f0f0; // Màu nền nhẹ
+    background-color: #ffffff; // Màu nền nhẹ
     border: 1px solid #d9d9d9; // Viền nhẹ
-    color: #333; // Màu chữ
+    color: #000000; // Màu chữ
     display: inline-flex; // Để icon và text cùng dòng
     align-items: center; // Căn giữa theo chiều dọc
+      font-size:14px;
 
     .anticon {
       margin-right: 6px; // Khoảng cách giữa icon và text
@@ -131,27 +132,28 @@
 
 .task-progress-report-row-layout {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: center;
-  padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
+  // padding-top: 16px;
+  // border-top: 1px solid #f0f0f0;
   color: #666;
-  font-size: 13px;
+  font-size: 16px;                                                          
 
   .report-left {
     display: flex;
     gap: 10px; // ✅ Khoảng cách giữa các tag báo cáo
 
     .report-item-tag {
-      // ✅ Style cho tag lịch báo cáo và nội dung
+    
       height: 32px;
       line-height: 30px;
       padding: 0 12px;
       border-radius: 16px; // ✅ Bo tròn tag
-      background-color: #f0f0f0;
+      background-color: #ffffff;
       border: 1px solid #d9d9d9;
-      color: #333;
+      color: #000000;
       display: inline-flex;
+      font-size:14px;
       align-items: center;
 
       .anticon {
